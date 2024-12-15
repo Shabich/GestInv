@@ -14,7 +14,7 @@ type CardProps = {
 
 const Card = ({ produits }: CardProps) => {
   return (
-    <div
+    <div 
       style={{
         display: 'flex',
         flexWrap: 'wrap',
@@ -98,3 +98,43 @@ const Card = ({ produits }: CardProps) => {
 };
 
 export default Card;
+// type Product = {
+//     id: number;
+//     nom_produit: string;
+//     prix: number;
+//     description: string;
+//     forme: string;
+//     dosage: string;
+//     laboratoire_fabriquant: string;
+//     image_url?: string;
+//     restrictions: string;
+// };
+
+
+// interface ProductCardProps {
+//   product: Product;
+// }
+
+// export default function ProductCard({ product }: ProductCardProps) {
+//   return (
+//     <div className="border border-gray-200 rounded-lg p-4 shadow-lg">
+//       {product.image_url ? (
+//         <img
+//           src={product.image_url} // Utilise image_url pour l'URL de l'image
+//           alt={product.nom_produit} // Correspond au nom du produit
+//           width={200}
+//           height={200}
+//           className="product-image"
+//         />
+//       ) : (
+//         <div className="product-image-placeholder">
+//           {/* Placeholder si aucune image n'est disponible */}
+//           Image non disponible
+//         </div>
+//       )}
+//       <h3 className="product-name">{product.nom_produit}</h3>
+//       <p className="product-description">{product.description}</p>
+//       <p className="product-price">{product.prix} €</p>
+//     </div>
+//   );
+// }
