@@ -7,12 +7,14 @@ export default {
       current: 'currentColor',
       'white': '#ffffff',
       'purple': '#3f3cbb',
+      'purplehover': '#343297',
       'midnight': '#121063',
       'metal': '#565584',
       'tahiti': '#3ab7bf',
       'silver': '#ecebff',
       'bubble-gum': '#ff77e9',
       'bermuda': '#78dcca',
+      'blue': '#5287f5',
     },
     extend: {
       backgroundImage: {
