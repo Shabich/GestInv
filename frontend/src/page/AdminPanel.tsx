@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ProductRow from '../component/ProductRow'; // Ajustez le chemin si nécessaire
+import ProductRow from '../component/ProductRow';
 import FormDialog from '../component/FormDialog';
 
 interface Produit {

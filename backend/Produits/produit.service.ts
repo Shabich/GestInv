@@ -1,4 +1,4 @@
-import db from '../models/db';
+import db from '../config/db';
 import { Produit } from './produit.interfaces';
 
 export class ProduitService {
