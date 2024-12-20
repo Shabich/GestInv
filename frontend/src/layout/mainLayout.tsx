@@ -1,25 +1,8 @@
-// import { Menu } from '@headlessui/react'
+
 import { Outlet } from "react-router-dom";
 import Footer from "../component/Footer";
 import Logo from '../assets/images/gsb-logo.png'
-// const user = {
-//   imageUrl:
-//     '',
-// }
-// const navigation = [
-//   { name: 'Nos Produits', href: '/', current: true },
-//   { name: 'Nous Connaitre', href: '/NousCo', current: false },
-//   { name: 'Espace Presse', href: '/EspacePresse', current: false },
-// ]
-// const userNavigation = [
-//   { name: 'Mon Profil', href: '#' },
-//   { name: 'Mes Paramètres', href: '#' },
-//   { name: 'Se déconnecter', href: '#' },
-// ]
 
-// function classNames(...classes: string[]): string {
-//   return classes.filter(Boolean).join(' ');
-// }
 
 export default function MainLayout() {
   return (
@@ -42,6 +25,9 @@ export default function MainLayout() {
 
                     <a href="/EspacePresse" className="hover:bg-silver px-[10px]">
                         Espace presse
+                    </a>
+                    <a href="/AdminPanel" className="hover:bg-silver px-[10px]">
+                        Panneau d'administration
                     </a>
                 </nav>
                 <div className="flex  justify-between items-center min-w-28">

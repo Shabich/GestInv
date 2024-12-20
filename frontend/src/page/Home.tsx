@@ -6,7 +6,7 @@ function Home() {
         <input type="text" className="px-4 py-2 w-1/2" placeholder="Rechercher" />
       </div>
 
-      <div className="xl:flex flex-col gap-10 mt-20 px-36 py-20 max-w-6xl">
+      <div className="xl:flex flex-col gap-10 mt-20 px-36 py-20">
         <h2 className="text-6xl">Qui sommes nous ?</h2>
         <div className="text-2xl">
           <p>
@@ -14,11 +14,12 @@ function Home() {
             mettent sur le marché les spécialités pharmaceutiques développées ou acquises par
             Ethypharm.
           </p>
+          <br />
           <p>
             Ils mettent à la disposition des professionnels de santé et de leurs patients, en
             France, des médicaments dans les domaines du SNC (douleur, addiction), des Injectables
             Hospitaliers (soins d’urgences et intensifs), la rhumatologie et la cardiologie.
-          </p>
+          </p><br />
           <p>
             Avec son portefeuille diversifié et composé de médicaments de marque distribués tant en
             ville qu’à l’hôpital – dont certains occupent des positions de leader dans leurs classes
@@ -26,7 +27,6 @@ function Home() {
             reconnaissance de la part des professionnels de santé.
           </p>
           <div>
-            <p>oiyfaeiquvbiuzeshnvoiu vbksvobed:</p>
           </div>
         </div>
       </div>

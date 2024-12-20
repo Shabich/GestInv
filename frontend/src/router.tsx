@@ -5,6 +5,7 @@ import Home from "./page/Home";
 import NosProduits from "./page/NosProduits";
 import NousConnaitre from "./page/NousConnaitre";
 import EspacePresse from "./page/EspacePresse";
+import AdminPanel from "./page/AdminPanel";
 
 
 export default function App() {
@@ -16,7 +17,7 @@ export default function App() {
           <Route path="NosProduits" element={<NosProduits />} />
           <Route path="NousConnaitre" element={<NousConnaitre/>} />
           <Route path="EspacePresse" element={<EspacePresse/>} />
-
+          <Route path="AdminPanel" element={<AdminPanel/>} />
         </Route>
       </Routes>
     </BrowserRouter>
