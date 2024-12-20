@@ -25,6 +25,9 @@ function Home() {
             thérapeutiques respectives – Les Laboratoires Ethypharm disposent d’une belle
             reconnaissance de la part des professionnels de santé.
           </p>
+          <div>
+            <p>oiyfaeiquvbiuzeshnvoiu vbksvobed:</p>
+          </div>
         </div>
       </div>
     </div>
