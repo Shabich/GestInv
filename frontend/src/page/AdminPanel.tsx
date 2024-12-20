@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ProductRow from '../component/ProductRow'; // Ajustez le chemin si nécessaire
+import FormDialog from '../component/FormDialog';
 
 interface Produit {
   id_t_produit: number;
@@ -11,7 +12,9 @@ interface Produit {
 const ProduitsTable: React.FC = () => {
   const [produits, setProduits] = useState<Produit[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);  
+  const [open, setOpen] = useState(false);
+  const [idEdit, setId] = useState<number | null>(null);
 
   useEffect(() => {
     const getProduits = async () => {
@@ -29,13 +32,16 @@ const ProduitsTable: React.FC = () => {
         setIsLoading(false);
       }
     };
-
     getProduits();
   }, []);
 
-  const handleEdit = (id: number) => {
-    alert(`Modifier le produit avec ID: ${id}`);
+  const handleClickOpen = (id: number) => {
+    setId(id) ,setOpen(true);
   };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
 
   const handleDelete = (id: number) => {
     const confirmDelete = window.confirm(
@@ -81,13 +87,15 @@ const ProduitsTable: React.FC = () => {
               <ProductRow
                 key={produit.id_t_produit}
                 produit={produit}
-                onEdit={handleEdit}
+                onEdit={handleClickOpen}
                 onDelete={handleDelete}
               />
             ))}
           </tbody>
         </table>
-      )}
+
+        
+      )}<FormDialog id={idEdit} open={open} handleClose={handleClose} />
     </div>
   );
 };
