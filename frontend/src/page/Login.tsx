@@ -20,15 +20,17 @@ function Auth() {
     event.preventDefault();
 
     const endpoint = isSignUp ? "signup" : "signin";
-    fetch(`http://localhost:3000/api/auth/${endpoint}`, {
+    const req = fetch(`http://localhost:3000/api/auth/${endpoint}`, {
       headers: {
         "Content-Type": "application/json",
       },
       method: "POST",
       body: JSON.stringify({ email, password }),
     })
+    req
       .then((response) => response.json())
       .then((data) => {
+        if(endpoint =="signin"){
         if (data.token) {
           localStorage.setItem("authToken", data.token);
           setIsAuthenticated(true);
@@ -38,6 +40,16 @@ function Auth() {
         } else {
           console.error("Token absent dans la réponse");
         }
+      }
+      if(endpoint =="signup"){
+        try{
+          req
+          navigate("/");
+
+        }catch(error){
+          console.error(error, "une erreur lors du signup")
+        }
+      }
       })
       .catch((error) => console.error("Error:", error));
   };
