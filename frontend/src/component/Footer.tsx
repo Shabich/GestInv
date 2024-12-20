@@ -15,7 +15,7 @@ const Footer = () => {
                 </div>
             </div>
 
-            <div className="flex justify-center py-5 bg-silver flex text-black m-0">
+            <div className="flex justify-center py-5 bg-silver text-black m-0">
                     <p>Copyright © 2018 - 2019 - Tous droits réservés. <a href="" className='text-purplehover'>Mentions légales</a> / <a href="" className='text-purplehover'>Conditions Générales de Vente</a></p>
             </div>
 
