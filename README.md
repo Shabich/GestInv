@@ -75,6 +75,7 @@ CREATE TABLE t_produit (
     dosage VARCHAR(50),
     prix DECIMAL(10, 2) NOT NULL,
     laboratoire_fabriquant VARCHAR(50),
+    image_url VARCHAR(255),
     restrictions VARCHAR(255),
     conservation VARCHAR(255),
     id_t_rappel INT,
@@ -187,10 +188,10 @@ VALUES
 ('update', 2, 'Mise à jour des informations d\'un produit');
  
 -- Table t_produit
-INSERT INTO t_produit (nom_produit, description, forme, dosage, prix, laboratoire_fabriquant, restrictions, conservation, id_t_rappel)
+INSERT INTO t_produit (nom_produit, description, forme, dosage, prix, laboratoire_fabriquant, image_url, restrictions, conservation, id_t_rappel)
 VALUES
-('Doliprane', 'Paracétamol pour douleur et fièvre', 'orale', '500mg', 2.50, 'Sanofi', 'Aucune restriction', 'Conserver à température ambiante', 1),
-('Amoxicilline', 'Antibiotique à large spectre', 'orale', '1g', 8.90, 'GSK', 'Pas pour les allergiques à la pénicilline', 'Conserver au frais', 2);
+('Doliprane', 'Paracétamol pour douleur et fièvre', 'orale', '500mg', 2.50, 'Sanofi', 'https://www.pharmacie-du-centre-albert.fr/resize/600x600/media/finish/img/normal/56/3400936381865-paracetamol-biogaran-1g-8-comprimes.jpg',  'Aucune restriction', 'Conserver à température ambiante', 1),
+('Amoxicilline', 'Antibiotique à large spectre', 'orale', '1g', 8.90, 'GSK', 'https://cdn.pim.mesoigner.fr/mesoigner/b77e88b7821cc28583840a8d5e3113af/mesoigner-thumbnail-1000-1000-inset/765/264/amoxicilline-biogaran-125-mg-5-ml-poudre-pour-suspension-buvable.webp', 'Pas pour les allergiques à la pénicilline', 'Conserver au frais', 2);
  
 -- Table t_user
 INSERT INTO t_user (nom, prenom, adresse_mail, adresse, num_tel, date_naissance, id_t_rappel)
