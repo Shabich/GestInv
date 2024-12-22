@@ -16,43 +16,59 @@ function Auth() {
     }
   }, []);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+  
     const endpoint = isSignUp ? "signup" : "signin";
-    const req = fetch(`http://localhost:3000/api/auth/${endpoint}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-    })
-    req
-      .then((response) => response.json())
-      .then((data) => {
-        if(endpoint =="signin"){
+  
+    try {
+      const response = await fetch(`http://localhost:3000/api/auth/${endpoint}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+      });
+  
+      const data = await response.json();
+  
+      if (!response.ok) {
+        throw new Error(data.message || "Une erreur est survenue");
+      }
+  
+      if (isSignUp) {
+        const loginResponse = await fetch(`http://localhost:3000/api/auth/signin`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify({ email, password }),
+        });
+  
+        const loginData = await loginResponse.json();
+  
+        if (!loginResponse.ok || !loginData.token) {
+          throw new Error("Erreur lors de la connexion après l'inscription");
+        }
+  
+        localStorage.setItem("authToken", loginData.token);
+        setIsAuthenticated(true);
+        navigate("/");
+      } else {
         if (data.token) {
           localStorage.setItem("authToken", data.token);
           setIsAuthenticated(true);
-          console.log("Token sauvegardé dans localStorage");
-
           navigate("/");
         } else {
           console.error("Token absent dans la réponse");
         }
       }
-      if(endpoint =="signup"){
-        try{
-          req
-          navigate("/");
-
-        }catch(error){
-          console.error(error, "une erreur lors du signup")
-        }
-      }
-      })
-      .catch((error) => console.error("Error:", error));
+    } catch (error)
+     {
+      console.error("Erreur :", error);
+    }
   };
+  
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
