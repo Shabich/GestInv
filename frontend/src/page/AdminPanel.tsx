@@ -15,11 +15,19 @@ const ProduitsTable: React.FC = () => {
   const [error, setError] = useState<string | null>(null);  
   const [open, setOpen] = useState(false);
   const [idEdit, setId] = useState<number | null>(null);
-
+  const token = localStorage.getItem("authToken");
   useEffect(() => {
     const getProduits = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/produits');
+        const response = await fetch('http://localhost:3000/api/produits',
+          {
+            method: 'GET',
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         if (!response.ok) {
           throw new Error('Problème avec la requête');
         }
@@ -50,6 +58,10 @@ const ProduitsTable: React.FC = () => {
     if (confirmDelete) {
       const del = fetch('http://localhost:3000/api/produits/' + id, {
         method: 'DELETE',
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       })
       if(del){
         return del
