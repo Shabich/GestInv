@@ -14,4 +14,8 @@ export type Produit = {
   restrictions: string
   conservation: string
   id_produit: number
+  id: number;
+  description: string;
+  image_url?: string; // Propriété optionnelle
+ 
 }

@@ -31,6 +31,9 @@ export default function MainLayout() {
             <a href="/AdminPanel" className="hover:bg-silver px-[10px]">
               Panneau d'administration
             </a>
+            <a href="/Panier" className="hover:bg-silver px-[10px]">
+            Panier
+            </a>
           </nav>
           <div className="flex justify-between items-center min-w-28">
             <button onClick={handleLogout} className="text-black hover:text-blue-500">
