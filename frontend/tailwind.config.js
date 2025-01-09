@@ -15,6 +15,7 @@ export default {
       'bubble-gum': '#ff77e9',
       'bermuda': '#78dcca',
       'blue': '#5287f5',
+      'black':"#001524"
     },
     extend: {
       backgroundImage: {
