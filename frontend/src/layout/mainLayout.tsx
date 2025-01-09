@@ -16,7 +16,6 @@ export default function MainLayout() {
       <header className="bg-white shadow-md p-1 px-5">
         <div className="flex justify-between items-center">
           <img src={Logo} alt="logo" className="w-24 h-12" />
-          {/*Menu desktop  */}
           <nav className="hidden lg:flex justify-between gap-9 min-w-28">
             <a href="/" className="duration-500 hover:bg-silver px-[10px]">Home</a>
             <a href="/NosProduits" className="duration-500 hover:bg-silver px-[10px]">Nos produits</a>
@@ -24,18 +23,21 @@ export default function MainLayout() {
             <a href="/EspacePresse" className="duration-500 hover:bg-silver px-[10px]">Espace presse</a>
             <a href="/AdminPanel" className="duration-500 hover:bg-silver px-[10px]">Panneau d'administration</a>
             <a href="/Panier" className="duration-500 hover:bg-silver px-[10px]">Panier</a>
+            <div className="flex justify-between items-center min-w-28">
+            <button onClick={handleLogout} className="text-black hover:text-blue-500">Log out</button>
+          </div>
           </nav>
-    
           <button className="lg:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
             </svg>
           </button>
-          <div className="flex justify-between items-center min-w-28">
-            <button onClick={handleLogout} className="text-black hover:text-blue-500">Log out</button>
-          </div>
         </div>
       </header>
+
+
+
+
       {/*Menu responsive - visible en dessous de 1024px (lg) */}
       <div
         className={`fixed top-20 right-0 z-50 w-4/6 sm:w-2/6 lg:hidden h-5/6 bg-white text-white shadow-black transform transition-transform duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'} rounded-tl-xl rounded-bl-xl shadow-2xl`}
