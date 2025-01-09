@@ -1,20 +1,15 @@
+import { Produit } from '../types'; // Importez le type Produit
+
 type CardProps = {
-  produits: {
-    id: number;
-    nom_produit: string;
-    prix: number;
-    description: string;
-    forme: string;
-    dosage: string;
-    laboratoire_fabriquant: string;
-    image_url?: string;
-    restrictions: string;
-  }[]; 
+  produits: Produit[]; // Un tableau de Produit
+  addToPanier: (produit: Produit) => void; // Une fonction pour ajouter au panier
 };
 
-const Card = ({ produits }: CardProps) => {
+
+
+const Card = ({ produits, addToPanier }: CardProps) => {
   return (
-    <div 
+    <div
       style={{
         display: 'flex',
         flexWrap: 'wrap',
@@ -25,7 +20,7 @@ const Card = ({ produits }: CardProps) => {
     >
       {produits.map((produit) => (
         <div
-          key={produit.id}
+          // key={produit.id}
           style={{
             border: '1px solid #ddd',
             borderRadius: '8px',
@@ -36,7 +31,6 @@ const Card = ({ produits }: CardProps) => {
             transition: 'transform 0.3s ease-in-out',
           }}
         >
-          {/* Image produit */}
           {produit.image_url && (
             <img
               src={produit.image_url}
@@ -87,7 +81,7 @@ const Card = ({ produits }: CardProps) => {
               cursor: 'pointer',
               width: '100%',
             }}
-            onClick={() => alert(`Acheter ${produit.nom_produit}`)}
+            onClick={() => addToPanier(produit)} // Ajouter le produit au panier
           >
             Acheter
           </button>
@@ -98,43 +92,3 @@ const Card = ({ produits }: CardProps) => {
 };
 
 export default Card;
-// type Product = {
-//     id: number;
-//     nom_produit: string;
-//     prix: number;
-//     description: string;
-//     forme: string;
-//     dosage: string;
-//     laboratoire_fabriquant: string;
-//     image_url?: string;
-//     restrictions: string;
-// };
-
-
-// interface ProductCardProps {
-//   product: Product;
-// }
-
-// export default function ProductCard({ product }: ProductCardProps) {
-//   return (
-//     <div className="border border-gray-200 rounded-lg p-4 shadow-lg">
-//       {product.image_url ? (
-//         <img
-//           src={product.image_url} // Utilise image_url pour l'URL de l'image
-//           alt={product.nom_produit} // Correspond au nom du produit
-//           width={200}
-//           height={200}
-//           className="product-image"
-//         />
-//       ) : (
-//         <div className="product-image-placeholder">
-//           {/* Placeholder si aucune image n'est disponible */}
-//           Image non disponible
-//         </div>
-//       )}
-//       <h3 className="product-name">{product.nom_produit}</h3>
-//       <p className="product-description">{product.description}</p>
-//       <p className="product-price">{product.prix} €</p>
-//     </div>
-//   );
-// }
