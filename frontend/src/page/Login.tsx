@@ -16,7 +16,7 @@ function Auth() {
     if (token) {
       setIsAuthenticated(true);
     }
-  }, []);
+  }, [token]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -75,9 +75,12 @@ function Auth() {
           throw new Error("Token absent dans la réponse");
         }
       }
-    } catch (error: any) {
-      console.error("Erreur :", error);
-      setErrorMessage(error.message || "Une erreur est survenue");
+    } catch (error: unknown) {
+      console.error(
+        error instanceof Error 
+          ? error.message 
+          : "Une erreur inattendue lors de la connexion."
+      );
     }
   };
 

@@ -65,9 +65,14 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadPr
 
           const data = await response.json();
           setProduit(data);
-        } catch (err: any) {
-          console.error('Erreur de requête :', err);
-          setError(err.message || 'Erreur lors de la récupération du produit');
+        }  catch (error: unknown) {
+          console.error('Erreur de requête :', error);
+          console.error(
+            error instanceof Error 
+              ? error.message 
+              : "Erreur lors de la récupération du produit."
+          );
+         
         } finally {
           setLoading(false);
         }
@@ -85,7 +90,7 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadPr
       });
       setError(null);
     }
-  }, [id, open]);
+  }, [id, open, token]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -129,9 +134,12 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadPr
       alert(id ? 'Produit modifié avec succès' : 'Produit créé avec succès');
       handleClose();
       reloadProduits();
-    } catch (err: any) {
-      console.error('Erreur lors de l\'enregistrement du produit :', err);
-      setError(err.message || 'Erreur lors de l\'enregistrement du produit');
+    } catch (error: unknown) {
+      console.error(
+        error instanceof Error 
+          ? error.message 
+          : "Erreur lors de l'enregistrement du produit."
+      );
     }
   };
 
