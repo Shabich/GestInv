@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Produit } from '../types'; // Importez le type Produit
+import { Produit } from '../types'; // Assurez-vous que Produit inclut { quantité: number }
 
 function Panier() {
   const [panier, setPanier] = useState<Produit[]>([]);
@@ -7,20 +7,28 @@ function Panier() {
   useEffect(() => {
     const storedPanier = localStorage.getItem('panier');
     if (storedPanier) {
-      setPanier(JSON.parse(storedPanier)); // Initialiser l'état avec les données du localStorage
+      setPanier(JSON.parse(storedPanier).map((item: Produit) => ({ ...item, quantité: item.quantité || 1 }))); // Ajouter une quantité par défaut
     }
   }, []);
 
   const removeFromPanier = (productId: number) => {
-    const updatedPanier = panier.filter((item) => item.id_t_produit !== productId); // Filtrer par id_t_produit
-    setPanier(updatedPanier); // Mettre à jour l'état
-    localStorage.setItem('panier', JSON.stringify(updatedPanier)); // Mettre à jour le localStorage
+    const updatedPanier = panier.filter((item) => item.id_t_produit !== productId);
+    setPanier(updatedPanier);
+    localStorage.setItem('panier', JSON.stringify(updatedPanier));
+  };
+
+  const updateQuantité = (productId: number, quantité: number) => {
+    const updatedPanier = panier.map((item) =>
+      item.id_t_produit === productId ? { ...item, quantité: Math.max(1, quantité) } : item
+    );
+    setPanier(updatedPanier);
+    localStorage.setItem('panier', JSON.stringify(updatedPanier));
   };
 
   // Calcul du sous-total, des frais de livraison, des taxes et du total
-  const sousTotal = panier.reduce((total, item) => total + item.prix, 0);
-  const fraisLivraison = 5.0; // Frais de livraison fixes
-  const taxes = sousTotal * 0.07; // Exemple de taxe de 7%
+  const sousTotal = panier.reduce((total, item) => total + item.prix * item.quantité, 0);
+  const fraisLivraison = 5.0;
+  const taxes = sousTotal * 0.07;
   const total = sousTotal + fraisLivraison + taxes;
 
   return (
@@ -62,12 +70,37 @@ function Panier() {
                     <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '10px' }}>
                       {item.nom_produit}
                     </h3>
-                    <p style={{ fontSize: '14px', color: '#666', marginBottom: '10px' }}>
-                      {item.description}
-                    </p>
+                    <p style={{ fontSize: '14px', color: '#666', marginBottom: '10px' }}>{item.description}</p>
                     <p style={{ fontSize: '14px', color: '#666', marginBottom: '10px' }}>
                       <strong>Prix:</strong> {item.prix}€
                     </p>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                      <button
+                        onClick={() => updateQuantité(item.id_t_produit, item.quantité - 1)}
+                        style={{
+                          padding: '4px 8px',
+                          backgroundColor: '#f0f0f0',
+                          border: '1px solid #ccc',
+                          borderRadius: '4px',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        -
+                      </button>
+                      <span style={{ margin: '0 10px', fontSize: '16px' }}>{item.quantité}</span>
+                      <button
+                        onClick={() => updateQuantité(item.id_t_produit, item.quantité + 1)}
+                        style={{
+                          padding: '4px 8px',
+                          backgroundColor: '#f0f0f0',
+                          border: '1px solid #ccc',
+                          borderRadius: '4px',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        +
+                      </button>
+                    </div>
                     <button
                       style={{
                         padding: '8px 16px',
@@ -106,7 +139,7 @@ function Panier() {
             <div style={{ marginBottom: '20px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
                 <span style={{ fontSize: '14px', color: '#666' }}>Sous-total</span>
-                <span style={{ fontSize: '14px', fontWeight: 'bold' }}>{Number(sousTotal).toFixed(2)}€</span>
+                <span style={{ fontSize: '14px', fontWeight: 'bold' }}>{sousTotal.toFixed(2)}€</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
                 <span style={{ fontSize: '14px', color: '#666' }}>Frais de livraison</span>
@@ -118,7 +151,7 @@ function Panier() {
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
                 <span style={{ fontSize: '16px', fontWeight: 'bold' }}>Total</span>
-                <span style={{ fontSize: '16px', fontWeight: 'bold' }}>{Number(total).toFixed(2)}€</span>
+                <span style={{ fontSize: '16px', fontWeight: 'bold' }}>{total.toFixed(2)}€</span>
               </div>
             </div>
 

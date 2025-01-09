@@ -4,6 +4,7 @@ export type Categorie = {
   lib_long: string
 }
 export type Produit = {
+  quantité: number;
   id_t_produit: number; // Identifiant unique
   nom_produit: string;
   forme: string;
