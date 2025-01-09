@@ -14,4 +14,5 @@ export type Produit = {
   conservation: string;
   description: string;
   image_url?: string; // Propriété optionnelle
+
 };
