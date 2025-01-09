@@ -7,14 +7,14 @@ function Panier() {
   useEffect(() => {
     const storedPanier = localStorage.getItem('panier');
     if (storedPanier) {
-      setPanier(JSON.parse(storedPanier));
+      setPanier(JSON.parse(storedPanier)); // Initialiser l'état avec les données du localStorage
     }
   }, []);
 
-   function removeFromPanier(productId: number){
-    const updatedPanier = panier.filter((item) => item.id !== productId);
-    setPanier(updatedPanier);
-    localStorage.setItem('panier', JSON.stringify(updatedPanier));
+  const removeFromPanier = (productId: number) => {
+    const updatedPanier = panier.filter((item) => item.id_t_produit !== productId); // Filtrer par id_t_produit
+    setPanier(updatedPanier); // Mettre à jour l'état
+    localStorage.setItem('panier', JSON.stringify(updatedPanier)); // Mettre à jour le localStorage
   };
 
   return (
@@ -26,7 +26,7 @@ function Panier() {
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
           {panier.map((item) => (
             <div
-              key={item.id}
+              key={item.id_t_produit} // Utiliser id_t_produit comme clé
               style={{
                 border: '1px solid #ddd',
                 borderRadius: '8px',
@@ -36,10 +36,10 @@ function Panier() {
                 backgroundColor: '#fff',
               }}
             >
-              { (
+              {item.image_url && (
                 <img
                   src={item.image_url}
-                  alt="aucune image existante"
+                  alt={item.nom_produit}
                   style={{
                     width: '100%',
                     height: '200px',
@@ -68,7 +68,7 @@ function Panier() {
                   cursor: 'pointer',
                   width: '100%',
                 }}
-                onClick={() => removeFromPanier(item.id)}
+                onClick={() => removeFromPanier(item.id_t_produit)} // Passer id_t_produit
               >
                 Supprimer
               </button>

@@ -20,7 +20,7 @@ const Card = ({ produits, addToPanier }: CardProps) => {
     >
       {produits.map((produit) => (
         <div
-          key={produit.id}
+          // key={produit.id}
           style={{
             border: '1px solid #ddd',
             borderRadius: '8px',
