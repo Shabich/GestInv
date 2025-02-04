@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Outlet, useNavigate } from "react-router-dom";
-import Logo from '../assets/images/gsb-logo.png';
+import Logo from '/images/gsb-logo.png';
 
 export default function MainLayout() {
   const navigate = useNavigate();

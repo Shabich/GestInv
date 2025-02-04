@@ -20,8 +20,9 @@ export default {
     },
     extend: {
       backgroundImage: {
-        'home': "url('./src/assets/images/Bg-home.jpg')",
+        'home': "url('/public/images/Bg-home.jpg')",
         'footer-texture': "url('')",
+
       }
     },
   },
