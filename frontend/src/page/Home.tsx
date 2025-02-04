@@ -1,9 +1,11 @@
 function Home() {
+
+  
   return (
     <div>
       {/* Section principale */}
       <div
-  className="relative text-center bg-home bg-cover bg-center bg-no-repeat overflow-hidden flex flex-col justify-center items-center p-20 md:p-60"
+  className="relative text-center bg-home bg-cover bg-center bg-no-repeat overflow-hidden flex flex-col justify-center items-center  p-20 md:p-60"
   style={{
     borderTopRightRadius: '90px',
     borderBottomRightRadius: '10px',
@@ -12,16 +14,16 @@ function Home() {
   }}
 >
   {/* Superposition sombre */}
-  <div className="absolute inset-0 bg-black opacity-50 rounded-[90px_10px_10px_90px]" />
+  <div className="absolute inset-0 bg-black opacity-50 rounded-[10px_10px_10px_90px]" />
 
   {/* Contenu */}
   <div className="relative z-10">
     <h4 className="font-Oswald text-white text-5xl md:text-7xl lg:text-9xl mb-10 md:mb-20">
-      GESTINV GSB
+      GESTINY GSB
     </h4>
     <input
       type="text"
-      className="px-4 py-2 w-full md:w-1/2 lg:w-1/3"
+      className="px-4 py-2 w-full md:w-1/2 lg:w-2/3 rounded-lg"
       placeholder="Rechercher"
     />
   </div>
