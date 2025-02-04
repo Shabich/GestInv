@@ -10,8 +10,10 @@ export default function MainLayout() {
     localStorage.removeItem("authToken");
     navigate("/login");
   };
-
+  const connected = (localStorage.getItem("authToken") != null) // renvoie un boolean pour valider la connection (pas de verif de token)
   return (
+
+
     <div className="min-h-screen bg-gray-100">
       <header className="bg-white shadow-md p-1 px-5">
         <div className="flex justify-between items-center">
@@ -24,7 +26,7 @@ export default function MainLayout() {
             <a href="/AdminPanel" className="duration-500 hover:bg-silver px-[10px]">Panneau d'administration</a>
             <a href="/Panier" className="duration-500 hover:bg-silver px-[10px]">Panier</a>
             <div className="flex justify-between items-center min-w-28">
-            <button onClick={handleLogout} className="text-black hover:text-blue-500">Log out</button>
+            <button onClick={handleLogout} className="text-black hover:text-blue-500">{connected ? 'Log out' : 'Log in'}</button>
           </div>
           </nav>
           <button className="lg:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>

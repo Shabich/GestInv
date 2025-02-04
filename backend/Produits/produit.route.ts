@@ -4,7 +4,7 @@ import { verifyToken } from '../Authent/auth.middleware';
 
 const produitRoute = Router();
 
-produitRoute.get('/', verifyToken, ProduitController.getAll);
+produitRoute.get('/', ProduitController.getAll);
 produitRoute.get('/:id', verifyToken, ProduitController.getById);
 produitRoute.post('/', verifyToken, ProduitController.create);
 produitRoute.put('/:id', verifyToken, ProduitController.update);
