@@ -10,7 +10,7 @@
     "test:backend": "npm test -w backend",
     "test:frontend": "npm test -w frontend"
   },
-  "author": "dstamenkovic",
+  "author": "shab",
   "license": "ISC",
   "workspaces": [
     "backend",

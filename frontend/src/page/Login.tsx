@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isSignUp, setIsSignUp] = useState(true);
+  const [isSignUp, setIsSignUp] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errorMessage, setErrorMessage] = useState(""); // Ajout pour afficher des erreurs
   // Récupérer le token
@@ -17,7 +17,9 @@ function Auth() {
       setIsAuthenticated(true);
     }
   }, [token]);
-
+    if(isAuthenticated){
+      navigate('/')
+    }
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -84,30 +86,12 @@ function Auth() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    setIsAuthenticated(false);
-  };
-
   return (
     <div>
-      {isAuthenticated ? (
-        <div>
-          <p>Bienvenue ! Vous êtes connecté.</p>
-          <button
-            onClick={handleLogout}
-            className="bg-red-500 text-black py-2 px-4 rounded"
-          >
-            Se déconnecter
-          </button>
-        </div>
-      ) : (
         <div className="flex justify-center p-20">
           <div className="flex flex-col justify-center items-center p-5 bg-white shadow-xl w-96 rounded-md gap-4">
-            <div className="flex flex-col mr-52">
-              <h2 className="text-lg font-bold">
-                {isSignUp ? "Sign up" : "Log in"}
-              </h2>
+            <div className="flex flex-col">
+      
               <p>
                 {isSignUp ? "Se créer un compte" : "Se connecter à son compte"}
               </p>
@@ -145,9 +129,15 @@ function Auth() {
                 ? "Déjà un compte ? Connectez-vous"
                 : "Pas de compte ? Créez-en un"}
             </button>
+            <button
+              onClick={() => navigate('/')}
+              className="text-blue-500 mt-4"
+            >
+             Revenir sur le site
+            </button>
           </div>
         </div>
-      )}
+      )
     </div>
   );
 }
