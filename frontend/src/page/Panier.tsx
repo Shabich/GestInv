@@ -1,80 +1,155 @@
 import { useEffect, useState } from 'react';
-import { Produit } from '../types'; // Assurez-vous que Produit inclut { quantité: number }
+import { Produit } from '../types';
 
 function Panier() {
   const [panier, setPanier] = useState<Produit[]>([]);
-
+  
   useEffect(() => {
     const storedPanier = localStorage.getItem('panier');
+    
     if (storedPanier) {
-      setPanier(JSON.parse(storedPanier).map((item: Produit) => ({ ...item, quantité: item.quantité || 1 }))); // Ajouter une quantité par défaut
+      setPanier(
+        JSON.parse(storedPanier).map((item: Produit) => ({
+          ...item,
+          quantité: item.quantité || 1,
+        }))
+      );
     }
   }, []);
 
   const removeFromPanier = (productId: number) => {
-    const updatedPanier = panier.filter((item) => item.id_t_produit !== productId);
+    const updatedPanier = panier.filter(
+      (item) => item.id_t_produit !== productId
+    );
     setPanier(updatedPanier);
     localStorage.setItem('panier', JSON.stringify(updatedPanier));
   };
 
   const updateQuantité = (productId: number, quantité: number) => {
     const updatedPanier = panier.map((item) =>
-      item.id_t_produit === productId ? { ...item, quantité: Math.max(1, quantité) } : item
+      item.id_t_produit === productId
+        ? { ...item, quantité: Math.max(1, quantité) }
+        : item
     );
     setPanier(updatedPanier);
     localStorage.setItem('panier', JSON.stringify(updatedPanier));
   };
 
   // Calcul du sous-total, des frais de livraison, des taxes et du total
-  const sousTotal = panier.reduce((total, item) => total + item.prix * item.quantité, 0);
+  const sousTotal = panier.reduce(
+    (total, item) => total + item.prix * item.quantité,
+    0
+  );
   const fraisLivraison = 5.0;
   const taxes = sousTotal * 0.07;
   const total = sousTotal + fraisLivraison + taxes;
 
-  return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif', maxWidth: '1200px', margin: '0 auto' }}>
-      <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>Votre Panier</h1>
+  // ---------- STYLES RESPONSIVE ----------
+  const containerStyle: React.CSSProperties = {
+    padding: '20px',
+    fontFamily: 'Arial, sans-serif',
+    maxWidth: '1200px',
+    margin: '0 auto',
+  };
 
-      <div style={{ display: 'flex', gap: '20px' }}>
+  // Conteneur qui inclut la liste des produits et le récapitulatif
+  // Utilise flex-wrap pour passer à la ligne suivante sur petits écrans
+  const columnsWrapperStyle: React.CSSProperties = {
+    display: 'flex',
+    gap: '20px',
+    flexWrap: 'wrap',    // Permet de faire passer la deuxième colonne en dessous si l’écran est trop petit
+  };
+
+  // Colonne des produits
+  const productsColumnStyle: React.CSSProperties = {
+    flex: 2,
+    minWidth: '300px',   // Largeur minimum pour éviter que la colonne ne devienne trop étroite
+  };
+
+  // Colonne du récapitulatif
+  const recapColumnStyle: React.CSSProperties = {
+    flex: 1,
+    minWidth: '280px',   // Largeur minimum pour le récapitulatif
+    maxHeight: 'fit-content', // Empêche d’avoir une trop grande hauteur sur petits écrans
+  };
+
+  // Style des cartes produits
+  const productCardStyle: React.CSSProperties = {
+    display: 'flex',
+    gap: '20px',
+    border: '1px solid #e0e0e0',
+    borderRadius: '8px',
+    padding: '20px',
+    backgroundColor: '#fff',
+    flexWrap: 'wrap', 
+  };
+
+  // Style de l'image produit (responsive)
+  const productImageStyle: React.CSSProperties = {
+    width: '100%',
+    maxWidth: '120px',  // Largeur max fixée, mais 100% sinon
+    height: 'auto',
+    objectFit: 'cover',
+    borderRadius: '8px',
+  };
+
+  return (
+    <div style={containerStyle}>
+      <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>
+        Votre Panier
+      </h1>
+
+      <div style={columnsWrapperStyle}>
         {/* Colonne des produits */}
-        <div style={{ flex: 2 }}>
+        <div style={productsColumnStyle}>
           {panier.length === 0 ? (
             <p>Votre panier est vide.</p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               {panier.map((item) => (
-                <div
-                  key={item.id_t_produit}
-                  style={{
-                    display: 'flex',
-                    gap: '20px',
-                    border: '1px solid #e0e0e0',
-                    borderRadius: '8px',
-                    padding: '20px',
-                    backgroundColor: '#fff',
-                  }}
-                >
+                <div key={item.id_t_produit} style={productCardStyle}>
                   {item.image_url && (
                     <img
                       src={item.image_url}
                       alt={item.nom_produit}
-                      style={{
-                        width: '120px',
-                        height: '120px',
-                        objectFit: 'cover',
-                        borderRadius: '8px',
-                      }}
+                      style={productImageStyle}
                     />
                   )}
-                  <div style={{ flex: 1 }}>
-                    <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '10px' }}>
+                  <div style={{ flex: 1, minWidth: '200px' }}>
+                    <h3
+                      style={{
+                        fontSize: '18px',
+                        fontWeight: 'bold',
+                        marginBottom: '10px',
+                      }}
+                    >
                       {item.nom_produit}
                     </h3>
-                    <p style={{ fontSize: '14px', color: '#666', marginBottom: '10px' }}>{item.description}</p>
-                    <p style={{ fontSize: '14px', color: '#666', marginBottom: '10px' }}>
-                      <strong>Prix:</strong> {item.prix}€
+                    <p
+                      style={{
+                        fontSize: '14px',
+                        color: '#666',
+                        marginBottom: '10px',
+                      }}
+                    >
+                      {item.description}
                     </p>
-                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                    <p
+                      style={{
+                        fontSize: '14px',
+                        color: '#666',
+                        marginBottom: '10px',
+                      }}
+                    >
+                      <strong>Prix: </strong> {item.prix}€
+                    </p>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        marginBottom: '10px',
+                      }}
+                    >
                       <button
                         onClick={() => updateQuantité(item.id_t_produit, item.quantité - 1)}
                         style={{
@@ -87,7 +162,9 @@ function Panier() {
                       >
                         -
                       </button>
-                      <span style={{ margin: '0 10px', fontSize: '16px' }}>{item.quantité}</span>
+                      <span style={{ margin: '0 10px', fontSize: '16px' }}>
+                        {item.quantité}
+                      </span>
                       <button
                         onClick={() => updateQuantité(item.id_t_produit, item.quantité + 1)}
                         style={{
@@ -123,7 +200,7 @@ function Panier() {
         </div>
 
         {/* Colonne du récapitulatif de la commande */}
-        <div style={{ flex: 1 }}>
+        <div style={recapColumnStyle}>
           <div
             style={{
               border: '1px solid #e0e0e0',
@@ -132,26 +209,70 @@ function Panier() {
               backgroundColor: '#fff',
             }}
           >
-            <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '20px' }}>
+            <h2
+              style={{
+                fontSize: '20px',
+                fontWeight: 'bold',
+                marginBottom: '20px',
+              }}
+            >
               Récapitulatif de la commande
             </h2>
 
             <div style={{ marginBottom: '20px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                <span style={{ fontSize: '14px', color: '#666' }}>Sous-total</span>
-                <span style={{ fontSize: '14px', fontWeight: 'bold' }}>{sousTotal.toFixed(2)}€</span>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  marginBottom: '10px',
+                }}
+              >
+                <span style={{ fontSize: '14px', color: '#666' }}>
+                  Sous-total
+                </span>
+                <span style={{ fontSize: '14px', fontWeight: 'bold' }}>
+                  {sousTotal.toFixed(2)}€
+                </span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                <span style={{ fontSize: '14px', color: '#666' }}>Frais de livraison</span>
-                <span style={{ fontSize: '14px', fontWeight: 'bold' }}>{fraisLivraison.toFixed(2)}€</span>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  marginBottom: '10px',
+                }}
+              >
+                <span style={{ fontSize: '14px', color: '#666' }}>
+                  Frais de livraison
+                </span>
+                <span style={{ fontSize: '14px', fontWeight: 'bold' }}>
+                  {fraisLivraison.toFixed(2)}€
+                </span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  marginBottom: '20px',
+                }}
+              >
                 <span style={{ fontSize: '14px', color: '#666' }}>Taxes</span>
-                <span style={{ fontSize: '14px', fontWeight: 'bold' }}>{taxes.toFixed(2)}€</span>
+                <span style={{ fontSize: '14px', fontWeight: 'bold' }}>
+                  {taxes.toFixed(2)}€
+                </span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-                <span style={{ fontSize: '16px', fontWeight: 'bold' }}>Total</span>
-                <span style={{ fontSize: '16px', fontWeight: 'bold' }}>{total.toFixed(2)}€</span>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  marginBottom: '20px',
+                }}
+              >
+                <span style={{ fontSize: '16px', fontWeight: 'bold' }}>
+                  Total
+                </span>
+                <span style={{ fontSize: '16px', fontWeight: 'bold' }}>
+                  {total.toFixed(2)}€
+                </span>
               </div>
             </div>
 
