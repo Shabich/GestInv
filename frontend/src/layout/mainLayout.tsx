@@ -1,44 +1,68 @@
-import { useState } from 'react';
-import { Outlet, useNavigate } from "react-router-dom";
-import Logo from '/images/gsb-logo.png';
+import { useState } from 'react'
+import { Outlet, useNavigate } from 'react-router-dom'
+import Logo from '/images/gsb-logo.png'
+import { ShoppingCart } from '@mui/icons-material'
 
 export default function MainLayout() {
-  const navigate = useNavigate();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate()
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    navigate("/login");
-  };
-  const connected = (localStorage.getItem("authToken") != null) // renvoie un boolean pour valider la connection (pas de verif de token)
+    localStorage.removeItem('authToken')
+    navigate('/login')
+  }
+  const connected = localStorage.getItem('authToken') != null // renvoie un boolean pour valider la connection (pas de verif de token)
   return (
-
-
     <div className="min-h-screen bg-gray-100">
       <header className="bg-white shadow-md p-1 px-5">
         <div className="flex justify-between items-center">
-          <img src={Logo} alt="logo" className="w-24 h-12" />
+          <img
+            src={Logo}
+            alt="Home"
+            className="w-24 h-12 cursor-pointer"
+            onClick={() => navigate('/')}
+          />{' '}
           <nav className="hidden lg:flex justify-between gap-9 min-w-28">
-            <a href="/" className="duration-500 hover:bg-silver px-[10px]">Home</a>
-            <a href="/NosProduits" className="duration-500 hover:bg-silver px-[10px]">Nos produits</a>
-            <a href="/NousConnaitre" className="duration-500 hover:bg-silver px-[10px]">Nous connaitre</a>
-            <a href="/EspacePresse" className="duration-500 hover:bg-silver px-[10px]">Espace presse</a>
-            <a href="/AdminPanel" className="duration-500 hover:bg-silver px-[10px]">Panneau d'administration</a>
-            <a href="/Panier" className="duration-500 hover:bg-silver px-[10px]">Panier</a>
+            <a href="/NosProduits" className="duration-500 hover:bg-silver px-[10px]">
+              Nos produits
+            </a>
+            <a href="/NousConnaitre" className="duration-500 hover:bg-silver px-[10px]">
+              Nous connaitre
+            </a>
+            <a href="/EspacePresse" className="duration-500 hover:bg-silver px-[10px]">
+              Espace presse
+            </a>
+            <a href="/AdminPanel" className="duration-500 hover:bg-silver px-[10px]">
+              Panneau d'administration
+            </a>
+            <a href="/Panier" className="duration-500 hover:bg-silver px-[10px]">
+              <ShoppingCart /> 
+              {/* Si possible ajouter un numéro pour le nombre d'item dans le shoppingCart */}
+            </a>
             <div className="flex justify-between items-center min-w-28">
-            <button onClick={handleLogout} className="text-black hover:text-blue-500">{connected ? 'Log out' : 'Log in'}</button>
-          </div>
+              <button onClick={handleLogout} className="text-black hover:bg-silver px-">
+                {connected ? 'Log out' : 'Log in'}
+              </button>
+            </div>
           </nav>
           <button className="lg:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              ></path>
             </svg>
           </button>
         </div>
       </header>
-
-
-
 
       {/*Menu responsive - visible en dessous de 1024px (lg) */}
       <div
@@ -51,14 +75,47 @@ export default function MainLayout() {
         <div className="h-full flex flex-col justify-center items-center p-4">
           <img src={Logo} alt="logo" className="w-24 h-12 mb-6 rounded-xl" />
           <nav className="space-y-4 w-full text-center">
-            <a href="/" className="block px-4 py-2 hover:bg-gray-800 text-black rounded-lg transition duration-300">Home</a>
-            <a href="/NosProduits" className="block px-4 py-2 hover:bg-gray-800 text-black rounded-lg transition duration-300">Nos produits</a>
-            <a href="/NousConnaitre" className="block px-4 py-2 hover:bg-gray-800 text-black rounded-lg transition duration-300">Nous connaitre</a>
-            <a href="/EspacePresse" className="block px-4 py-2 hover:bg-gray-800 text-black rounded-lg transition duration-300">Espace presse</a>
-            <a href="/AdminPanel" className="block px-4 py-2 hover:bg-gray-800 text-black rounded-lg transition duration-300">Panneau d'administration</a>
-            <a href="/Panier" className="block px-4 py-2 hover:bg-gray-800 text-black rounded-lg transition duration-300">Panier</a>
+            <a
+              href="/"
+              className="block px-4 py-2 hover:bg-gray-800 text-black rounded-lg transition duration-300"
+            >
+              Home
+            </a>
+            <a
+              href="/NosProduits"
+              className="block px-4 py-2 hover:bg-gray-800 text-black rounded-lg transition duration-300"
+            >
+              Nos produits
+            </a>
+            <a
+              href="/NousConnaitre"
+              className="block px-4 py-2 hover:bg-gray-800 text-black rounded-lg transition duration-300"
+            >
+              Nous connaitre
+            </a>
+            <a
+              href="/EspacePresse"
+              className="block px-4 py-2 hover:bg-gray-800 text-black rounded-lg transition duration-300"
+            >
+              Espace presse
+            </a>
+            <a
+              href="/AdminPanel"
+              className="block px-4 py-2 hover:bg-gray-800 text-black rounded-lg transition duration-300"
+            >
+              Panneau d'administration
+            </a>
+            <a
+              href="/Panier"
+              className="block px-4 py-2 hover:bg-gray-800 text-black rounded-lg transition duration-300"
+            >
+              Panier
+            </a>
             {/* Bouton de déconnexion dans le menu responsive */}
-            <button onClick={handleLogout} className="block px-4 py-2 hover:bg-gray-800 text-black rounded-lg transition duration-300 w-full text-center">
+            <button
+              onClick={handleLogout}
+              className="block px-4 py-2 hover:bg-gray-800 text-black rounded-lg transition duration-300 w-full text-center"
+            >
               Log out
             </button>
           </nav>
@@ -70,5 +127,5 @@ export default function MainLayout() {
         </div>
       </main>
     </div>
-  );
+  )
 }

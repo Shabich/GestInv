@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ProductRow from '../component/ProductRow';
 import FormDialog from '../component/FormDialog';
+import { apiFetch } from '../utils/api';
 
 interface Produit {
   id_t_produit: number;
@@ -18,7 +19,7 @@ const ProduitsTable: React.FC = () => {
 
   // Récupérer le token
   const token = localStorage.getItem("authToken");
-
+ 
   // Fonction pour récupérer les produits
   const getProduits = async () => {
     if (!token) {
@@ -80,7 +81,7 @@ const ProduitsTable: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/produits/${id}`, {
+      const response = await apiFetch(`http://localhost:3000/api/produits/${id}`, {
         method: 'DELETE',
         headers: {
           "Content-Type": "application/json",
@@ -141,7 +142,7 @@ const ProduitsTable: React.FC = () => {
         id={idEdit}
         open={open}
         handleClose={handleClose}
-        reloadProduits={getProduits} // Ajout de la propriété `reloadProduits`
+        reloadProduits={getProduits} // Ajosut de la propriété `reloadProduits`
       />
     </div>
   );
