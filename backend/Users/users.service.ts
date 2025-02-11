@@ -13,7 +13,12 @@ export class UsersService {
   }
 
   static async update(user: Users): Promise<void> {
-    await db.query('UPDATE t_user SET adminAproved = ? WHERE id = ?', [user.admin, user.id_t_user])
+    const {id_t_user,nom,prenom,adresse_mail,adresse,num_tel,date_naissance,id_t_rappel,admin } = user;
+    const formatted_date_naissance = date_naissance?.toString().slice(0, 10)
+    await db.query(
+      'UPDATE t_user SET id_t_user = ?,nom = ?,prenom = ?,adresse_mail = ?,adresse = ?,num_tel = ?,date_naissance = ?,id_t_rappel = ?,admin = ? WHERE id_t_user = ?', 
+      [id_t_user,nom,prenom,adresse_mail,adresse,num_tel,formatted_date_naissance,id_t_rappel,admin,id_t_user]
+    )
   }
 
   static async delete(id: number): Promise<void> {

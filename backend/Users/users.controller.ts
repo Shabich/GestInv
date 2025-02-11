@@ -16,17 +16,16 @@ export class UsersController {
       const id = parseInt(req.params.id, 10)
       const user = await UsersService.getById(id)
       res.json(user)
-    }catch(e){
-      res.status(500).json({err: e})
+    }catch(e: any){
+      res.status(500).json({err: e.message})
     }
   }
   static async update(req: Request, res: Response): Promise<void> {
     try{
       const user = req.body as Users;
       await UsersService.update(user);
-    }catch(e){
-      res.status(500).json({err: e})
-
+    }catch(e: any){
+      res.status(500).json({err: e.message})
     }
   }
   static async delete(req: Request, res: Response): Promise<void> {
