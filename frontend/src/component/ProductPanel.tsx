@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ProductRow from '../component/ProductRow'
-import FormDialog from '../component/FormDialog'
+import FormDialog from '../component/ProductForm'
 
 export interface Product {
   id_t_produit: number
@@ -108,7 +108,6 @@ const ProductsPanel: React.FC = () => {
 
   return (
     <div>
-      <h1>Produits</h1>
       <button
         onClick={handleCreate}
         style={{ marginBottom: '10px', background: '#367ff5', color: 'white', padding: '3px' }}

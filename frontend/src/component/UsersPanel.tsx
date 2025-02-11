@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import UserRow from '../component/UserRow'
+import UserForm from './UserForm'
 
 export interface User {
   id_t_user: number
@@ -11,7 +12,8 @@ const UsersPanel: React.FC = () => {
   const [users, setUsers] = useState<User[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
-
+  const [open, setOpen] = useState(false)
+  const [idEdit, setId] = useState<number | null>(null)
 
   // Récupérer le token
   const token = localStorage.getItem('authToken')
@@ -53,6 +55,17 @@ const UsersPanel: React.FC = () => {
     getUsers()
   }, [token])
 
+  const handleClickOpen = (id: number | null) => {
+    setId(id)
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+    getUsers() // Rafraîchir les produits après fermeture
+  }
+
+
   const handleDelete = async (id: number) => {
     const confirmDelete = window.confirm(
       `Êtes-vous sûr de vouloir supprimer le user avec l'ID: ${id}?`,
@@ -87,12 +100,9 @@ const UsersPanel: React.FC = () => {
     }
   }
 
-
-
   return (
 
     <div>
-      <h1>Utilisateurs</h1>
       {isLoading && <p>Chargement des users...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {!isLoading && !error && (
@@ -110,13 +120,20 @@ const UsersPanel: React.FC = () => {
               <UserRow
                 key={user.id_t_user}
                 user={user}
-                onEdit={() => console.log('onEdit')}
+                onEdit={() => handleClickOpen(user.id_t_user)}
                 onDelete={() => handleDelete(user.id_t_user)}
               />
             ))}
           </tbody>
         </table>
       )}
+      <UserForm
+        id={idEdit}
+        open={open}
+        handleClose={handleClose}
+        reloadUsers={getUsers} // Ajout de la propriété `reloadProduits`
+
+        />
     </div>
   )
 }
