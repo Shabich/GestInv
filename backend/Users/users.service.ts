@@ -12,18 +12,8 @@ export class UsersService {
     return (rows[0] as Users) || null
   }
 
-  // static async create(produit: Users): Promise<number> {
-  //   const { nom_produit, description, forme, dosage, prix, laboratoire_fabriquant } = produit;
-  //   const [result]: any = await db.query(
-  //     'INSERT INTO t_produit (nom_produit, description, forme, dosage, prix, laboratoire_fabriquant) VALUES (?, ?, ?, ?, ?, ?)',
-  //     [nom_produit, description, forme, dosage, prix, laboratoire_fabriquant]
-  //   );
-  //   return result.insertId;
-  // }
-
-  static async update(id: number, user: Users): Promise<void> {
-    const { adminAproved } = user
-    await db.query('UPDATE t_user SET adminAproved = 1', [adminAproved])
+  static async update(user: Users): Promise<void> {
+    await db.query('UPDATE t_user SET adminAproved = ? WHERE id = ?', [user.admin, user.id_t_user])
   }
 
   static async delete(id: number): Promise<void> {

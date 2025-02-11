@@ -2,27 +2,16 @@ import React from 'react'
 
 export interface User {
   id_t_user: number
-  name_t_user: string
-  adminAproved: boolean
+  nom: string
+  prenom: string
+  admin: boolean
 }
-
-interface UserRowProps {
-  user: User
-  onEdit: (id: number) => void
-  onDelete: (id: number) => void
-}
-
-const UserRow: React.FC<UserRowProps> = ({ user, onEdit, onDelete }) => {
+const UserRow: React.FC<any> = ({ user, onEdit, onDelete }) => {
   return (
     <tr key={user.id_t_user}>
-      {/* <td>{user.id_t_user}</td>
-      <td>{user.nom_produit}</td>
-      <td>{user.prix}€</td>
-      <td>{user.adminAproved}</td> */}
-
       <td>{user.id_t_user}</td>
-      <td>{user.name_t_user}</td>
-      <td>{user.adminAproved ? '✅' : '❌'}</td>
+      <td>{user.nom + " " + user.prenom}</td>
+      <td>{user.admin ? '✅' : '❌'}</td>
 
       <td>
         <button onClick={() => onEdit(user.id_t_user)}>Modifier</button>
