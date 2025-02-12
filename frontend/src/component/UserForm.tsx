@@ -56,7 +56,11 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadUs
           }
 
           const data = await response.json();
-          setUser(data);
+          console.log(data, 'dataTest')
+          const userForm = { ... data}
+          if(userForm.date_naissance)userForm.date_naissance = userForm.date_naissance.slice(0, 10);
+          setUser(userForm);
+
         }  catch (error: unknown) {
           console.error('Erreur de requête :', error);
           console.error(
@@ -196,6 +200,9 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadUs
                 fullWidth
                 variant="standard"
               />
+
+
+
                 <TextField
                 margin="dense"
                 id="admin"
