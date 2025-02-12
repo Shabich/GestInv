@@ -15,6 +15,7 @@ const UsersPanel: React.FC = () => {
   const [error, setError] = useState<string | null>(null)
   const [open, setOpen] = useState(false)
   const [idEdit, setId] = useState<number | null>(null)
+  const [messageSucces, setMessageSucces] = useState<string | null>(null) // État pour le message de succès
 
   // Récupérer le token
   const token = localStorage.getItem('authToken')
@@ -100,8 +101,8 @@ const UsersPanel: React.FC = () => {
       }
 
       setUsers(prev => prev.filter(user => user.id_t_user !== id))
-      alert('User supprimé')
-    } catch (err) {
+      setMessageSucces('User supprimé avec succès')
+      setTimeout(() => setMessageSucces(null), 3000)    } catch (err) {
       console.error('Erreur lors de la suppression :', err)
       alert('Erreur lors de la suppression du user')
     }
@@ -110,6 +111,11 @@ const UsersPanel: React.FC = () => {
   return (
 
     <div>
+          {messageSucces && (
+        <div style={{ backgroundColor: 'green', color: 'white', padding: '10px', textAlign: 'center' }}>
+          {messageSucces}
+        </div>
+      )}
       {isLoading && <p>Chargement des users...</p>}
       {error && <p style={{ color: 'red' }}>{error} 
       </p>}

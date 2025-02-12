@@ -16,6 +16,7 @@ const ProductsPanel: React.FC = () => {
   const [error, setError] = useState<string | null>(null)
   const [open, setOpen] = useState(false)
   const [idEdit, setId] = useState<number | null>(null)
+  const [messageSucces, setMessageSucces] = useState<string | null>(null); // État pour le message de succès
 
   // Récupérer le token
   const token = localStorage.getItem('authToken')
@@ -101,7 +102,10 @@ const ProductsPanel: React.FC = () => {
       }
 
       setProduits(prev => prev.filter(produit => produit.id_t_produit !== id))
-      alert('Produit supprimé')
+      setMessageSucces('Le produit a été supprimé');
+      setTimeout(() => setMessageSucces(null), 3000); 
+
+
     } catch (err) {
       console.error('Erreur lors de la suppression :', err)
       alert('Erreur lors de la suppression du produit')
@@ -114,6 +118,11 @@ const ProductsPanel: React.FC = () => {
 
   return (
     <div>
+      {messageSucces && (
+        <div style={{ backgroundColor: 'green', color: 'white', padding: '10px', textAlign: 'center' }}>
+          {messageSucces}
+        </div>
+      )}
       <button
         onClick={handleCreate}
         style={{ marginBottom: '10px', background: '#367ff5', color: 'white', padding: '3px' }}
@@ -122,7 +131,7 @@ const ProductsPanel: React.FC = () => {
       </button>
       {isLoading && <p>Chargement des produits...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      {error && <button onClick={handleLogout}>Veuillez vous reconnecter</button>}
+      {error && <button style={{ marginBottom: '10px', background: '#FF0000', color: 'white', padding: '3px' }} onClick={handleLogout}>Veuillez vous reconnecter</button>}
       {!isLoading && !error && (
         <table border={1} style={{ width: '100%', textAlign: 'left' }}>
           <thead>
