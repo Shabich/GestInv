@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import UserRow from '../component/UserRow'
 import UserForm from './UserForm'
+import { useNavigate } from 'react-router-dom'
 
 export interface User {
   id_t_user: number
@@ -17,7 +18,12 @@ const UsersPanel: React.FC = () => {
 
   // Récupérer le token
   const token = localStorage.getItem('authToken')
+  const navigate = useNavigate()
 
+  const handleLogout = () => {
+    localStorage.removeItem('authToken')
+    navigate('/login')
+  }
   const getUsers = async () => {
     if (!token) {
       setError("Aucun token trouvé, vous n'êtes pas authentifié.")
@@ -106,11 +112,12 @@ const UsersPanel: React.FC = () => {
     <div>
       {isLoading && <p>Chargement des users...</p>}
       {error && <p style={{ color: 'red' }}>{error} 
-
-        <br />
-      <a href="/login">Veuillez vous reconnecter</a>  
-        
       </p>}
+      {
+      // error && 
+      <button onClick={handleLogout}>Veuillez vous reconnecter</button>}
+
+
       {!isLoading && !error && (
         <table border={1} style={{ width: '100%', textAlign: 'left' }}>
           <thead>

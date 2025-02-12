@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ProductRow from '../component/ProductRow'
 import FormDialog from '../component/ProductForm'
+import { useNavigate } from 'react-router-dom'
 
 export interface Product {
   id_t_produit: number
@@ -18,7 +19,12 @@ const ProductsPanel: React.FC = () => {
 
   // Récupérer le token
   const token = localStorage.getItem('authToken')
+  const navigate = useNavigate()
 
+  const handleLogout = () => {
+    localStorage.removeItem('authToken')
+    navigate('/login')
+  }
   // Fonction pour récupérer les produits
   const getProduits = async () => {
     if (!token) {
@@ -116,6 +122,7 @@ const ProductsPanel: React.FC = () => {
       </button>
       {isLoading && <p>Chargement des produits...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <button onClick={handleLogout}>Veuillez vous reconnecter</button>}
       {!isLoading && !error && (
         <table border={1} style={{ width: '100%', textAlign: 'left' }}>
           <thead>
