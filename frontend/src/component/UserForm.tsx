@@ -7,7 +7,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
 interface User {
-    id_t_user?: number
     nom?: string
     prenom?: string
     adresse_mail?: string
@@ -38,7 +37,7 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadUs
   const token = localStorage.getItem("authToken");
 
   useEffect(() => {
-    if (id !== null && open) {
+    if (open && id!==null) {
       const getUser = async () => {
         setLoading(true);
         setError(null);
@@ -56,7 +55,6 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadUs
           }
 
           const data = await response.json();
-          console.log(data, 'dataTest')
           const userForm = { ... data}
           if(userForm.date_naissance)userForm.date_naissance = userForm.date_naissance.slice(0, 10);
           setUser(userForm);
@@ -98,11 +96,9 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadUs
     event.preventDefault();
     setError(null);
     try {
-      console.log(JSON.stringify(user), 'userBody')
-      const method = 'PUT';
-      const url = `http://localhost:3000/api/users/`;
-      const response = await fetch(url, {
-        method,
+      console.log(user, 'bodyput')
+      const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+        method : 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -116,7 +112,7 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadUs
         throw new Error(errorData.message || 'Erreur lors de la requête');
       }
 
-      alert('Users modifié avec succès');
+      alert('User modifié avec succès'); // à changer en pop up verte
       handleClose();
       reloadUsers();
     } catch (error: unknown) {

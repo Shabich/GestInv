@@ -131,7 +131,7 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadPr
         throw new Error(errorData.message || 'Erreur lors de la requête');
       }
 
-      alert(id ? 'Produit modifié avec succès' : 'Produit créé avec succès');
+      alert(id ? 'Produit modifié avec succès' : 'Produit créé avec succès'); // a changer en pop up verte
       handleClose();
       reloadProduits();
     } catch (error: unknown) {

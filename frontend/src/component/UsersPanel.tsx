@@ -46,6 +46,7 @@ const UsersPanel: React.FC = () => {
     } catch (err) {
       console.error('Erreur de requête :', err)
       setError('Erreur lors du chargement des users')
+
     } finally {
       setIsLoading(false)
     }
@@ -62,7 +63,7 @@ const UsersPanel: React.FC = () => {
 
   const handleClose = () => {
     setOpen(false)
-    getUsers() // Rafraîchir les produits après fermeture
+    getUsers() 
   }
 
 
@@ -104,7 +105,12 @@ const UsersPanel: React.FC = () => {
 
     <div>
       {isLoading && <p>Chargement des users...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p style={{ color: 'red' }}>{error} 
+
+        <br />
+      <a href="/login">Veuillez vous reconnecter</a>  
+        
+      </p>}
       {!isLoading && !error && (
         <table border={1} style={{ width: '100%', textAlign: 'left' }}>
           <thead>
