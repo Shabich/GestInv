@@ -113,9 +113,7 @@ const UsersPanel: React.FC = () => {
       {isLoading && <p>Chargement des users...</p>}
       {error && <p style={{ color: 'red' }}>{error} 
       </p>}
-      {
-      // error && 
-      <button onClick={handleLogout}>Veuillez vous reconnecter</button>}
+      {error && <button onClick={handleLogout}>Veuillez vous reconnecter</button>}
 
 
       {!isLoading && !error && (
