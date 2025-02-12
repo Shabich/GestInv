@@ -4,7 +4,7 @@ import { verifyToken } from '../Authent/auth.middleware'
 
 const userRoute = Router()
 
-userRoute.put('/', verifyToken,UsersController.update)
+userRoute.put('/:id', verifyToken,UsersController.update)
 userRoute.get('/', verifyToken,UsersController.getAll)
 userRoute.get('/:id', verifyToken,UsersController.getById)
 userRoute.delete('/:id', verifyToken, UsersController.delete)

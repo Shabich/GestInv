@@ -22,8 +22,10 @@ export class UsersController {
   }
   static async update(req: Request, res: Response): Promise<void> {
     try{
+      const id = parseInt(req.params.id, 10);
       const user = req.body as Users;
-      await UsersService.update(user);
+      await UsersService.update(user, id);
+      res.json({ message: 'User mis à jour' });
     }catch(e: any){
       res.status(500).json({err: e.message})
     }

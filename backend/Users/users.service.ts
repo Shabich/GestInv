@@ -12,12 +12,17 @@ export class UsersService {
     return (rows[0] as Users) || null
   }
 
-  static async update(user: Users): Promise<void> {
-    const {id_t_user,nom,prenom,adresse_mail,adresse,num_tel,date_naissance,id_t_rappel,admin } = user;
-    const formatted_date_naissance = date_naissance?.toString().slice(0, 10)
-    await db.query(
-      'UPDATE t_user SET id_t_user = ?,nom = ?,prenom = ?,adresse_mail = ?,adresse = ?,num_tel = ?,date_naissance = ?,id_t_rappel = ?,admin = ? WHERE id_t_user = ?', 
-      [id_t_user,nom,prenom,adresse_mail,adresse,num_tel,formatted_date_naissance,id_t_rappel,admin,id_t_user]
+  static async update(user: Users, id: number): Promise<void> {
+    const {nom,prenom,adresse_mail,adresse,num_tel,date_naissance,id_t_rappel,admin } = user;
+    const formatted_date_naissance = date_naissance 
+    ? new Date(date_naissance).toISOString().slice(0, 10) 
+    : null;
+    if (!id) {
+      throw new Error("L'ID de l'utilisateur est requis pour la mise à jour.");
+    }
+      await db.query(
+      'UPDATE t_user SET nom = ?,prenom = ?,adresse_mail = ?,adresse = ?,num_tel = ?,date_naissance = ?,id_t_rappel = ?,admin = ? WHERE id_t_user = ?', 
+      [nom,prenom,adresse_mail,adresse,num_tel,formatted_date_naissance,id_t_rappel,admin,id]
     )
   }
 
