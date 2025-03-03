@@ -393,3 +393,7 @@ INSERT INTO tj_commande_user (id_t_user, id_t_commande, id_t_log_transaction) VA
 INSERT INTO tj_user_allergie (id_t_allergie, id_t_user) VALUES (1, 1), (2, 2);
 
 INSERT INTO tj_produit_categorie (id_t_produit, id_t_categorie) VALUES (1, 3), (2, 1);
+
+ALTER TABLE t_produit
+
+ADD stock INT;
