@@ -16,7 +16,12 @@ export class ProduitService {
     const [rows]: any = await db.query('SELECT * FROM t_produit WHERE id_t_categorie= ?', [id])
     return (rows as Produit) || null
   }
-  
+  static async getBySearch(text: string): Promise<Produit | null> {
+    const query = 'SELECT * FROM t_produit WHERE nom_produit LIKE ?';
+    const [rows]: any = await db.query(query, [`%${text}%`]);
+    return (rows as Produit);
+}
+
   static async getById(id: number): Promise<Produit | null> {
     const [rows]: any = await db.query('SELECT * FROM t_produit WHERE id_t_produit = ?', [id])
     return (rows as Produit) || null

@@ -300,7 +300,7 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadPr
                   {Array.isArray(categorie)
                     ? categorie.map(option => (
                         <MenuItem key={option.id_t_categorie} value={option.id_t_categorie}>
-                          {option.lib_long}
+                          {option.lib_court}
                         </MenuItem>
                       ))
                     : []}

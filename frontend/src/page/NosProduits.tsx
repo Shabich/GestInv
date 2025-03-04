@@ -7,6 +7,7 @@ function NosProduits() {
   const [messageSucces, setMessageSucces] = useState<string | null>(null)
   const [categorie, setCategorie] = useState<Categorie[]>([])
   const [categorieActive, setCategorieActive] = useState<number | null>(null)
+  const [searchTerm, setSearchTerm] = useState<string>('')
 
   useEffect(() => {
     getProduits()
@@ -91,6 +92,32 @@ function NosProduits() {
     }
   }
 
+  async function handleSearch(event: React.ChangeEvent<HTMLInputElement>) {
+    const value = event.target.value
+    setSearchTerm(value)
+    if (value.length > 1) {
+      try {
+        const url = `http://localhost:3000/api/produits/search/${value}`
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        if (!response.ok) {
+          throw new Error('Problème avec la requête')
+        }
+        const data = await response.json()
+        setProduits(data)
+        setCategorieActive(0)
+      } catch (error) {
+        console.error('Erreur de requête:', error)
+      }
+    }else{
+      getProduits()
+    }
+  }
+
   return (
     <>
       {messageSucces && (
@@ -98,6 +125,15 @@ function NosProduits() {
           {messageSucces}
         </div>
       )}
+
+      <input
+        type="text"
+        placeholder="Rechercher un produit..."
+        value={searchTerm}
+        onChange={handleSearch}
+        className="border p-2 m-2 w-full"
+      />
+
       <nav className="justify-start" style={{ backgroundColor: '#007BFF', color: 'white' }}>
         <button
           onClick={() => getProduits()}
