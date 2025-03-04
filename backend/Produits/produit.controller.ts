@@ -5,7 +5,10 @@ import { Produit } from './produit.interfaces';
 export class ProduitController {
   static async getAll(req: Request, res: Response): Promise<void> {
     try {
-      const produits = await ProduitService.getAll();
+      const {forme} = req.query; //pour récupérer le filtre de la requête
+      const produits = forme 
+      ? await ProduitService.getByForme(forme as string)
+      : await ProduitService.getAll();
       res.json(produits);
     } catch (err : any) {
       res.status(500).json({ error: err.message });
