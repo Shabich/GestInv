@@ -1,19 +1,17 @@
 import { useEffect, useState } from 'react'
 import Card from '../component/Card'
-import { Categorie, Produit } from '../types' // Import du type Produit
+import { Categorie, Produit } from '../types'
 
 function NosProduits() {
   const [produits, setProduits] = useState<Produit[]>([])
   const [messageSucces, setMessageSucces] = useState<string | null>(null)
   const [categorie, setCategorie] = useState<Categorie[]>([])
+  const [categorieActive, setCategorieActive] = useState<number | null>(null)
 
   useEffect(() => {
     getProduits()
     getCategories()
-
-    console.log(categorie)
-  }, []) // Le tableau vide assure que les fonctions ne s'exécutent qu'une seule fois
-
+  }, [])
 
   const getProduits = async () => {
     try {
@@ -34,10 +32,12 @@ function NosProduits() {
 
       const data: Produit[] = await response.json()
       setProduits(data)
+      setCategorieActive(null)
     } catch (error) {
       console.error('Erreur de requête:', error)
     }
   }
+
   const getCategories = async () => {
     try {
       const url = 'http://localhost:3000/api/produits/categorie'
@@ -58,6 +58,7 @@ function NosProduits() {
       console.error('Erreur de requête:', error)
     }
   }
+
   function addToPanier(produit: Produit) {
     const storedPanier = localStorage.getItem('panier')
     const panier: Produit[] = storedPanier ? JSON.parse(storedPanier) : []
@@ -67,7 +68,8 @@ function NosProduits() {
     setMessageSucces(`${produit.nom_produit} a été ajouté au panier !`)
     setTimeout(() => setMessageSucces(null), 3000)
   }
-  async function getAppCate(id: number){
+
+  async function getAppCate(id: number) {
     try {
       const url = `http://localhost:3000/api/produits/categorie/${id}`
       const response = await fetch(url, {
@@ -83,6 +85,7 @@ function NosProduits() {
 
       const data = await response.json()
       setProduits(data)
+      setCategorieActive(id)
     } catch (error) {
       console.error('Erreur de requête:', error)
     }
@@ -91,20 +94,23 @@ function NosProduits() {
   return (
     <>
       {messageSucces && (
-        <div
-          style={{ backgroundColor: 'green', color: 'white', padding: '10px', textAlign: 'center' }}
-        >
+        <div style={{ backgroundColor: 'green', color: 'white', padding: '10px', textAlign: 'center' }}>
           {messageSucces}
         </div>
       )}
-      <nav className=" justify-start"   style={{ backgroundColor: '#007BFF', color:'white' }}>
-      <button
-          onClick={() => getProduits()} className="duration-500 bg-black px-[10px]">
-            Tout voir
-          </button>
-        {categorie.map((cate, index) => (
-          <button key={index} 
-          onClick={() => getAppCate(cate.id_t_categorie)} className="duration-500 hover:bg-black px-[10px]">
+      <nav className="justify-start" style={{ backgroundColor: '#007BFF', color: 'white' }}>
+        <button
+          onClick={() => getProduits()}
+          className={`duration-500 px-[10px] ${categorieActive === null ? 'bg-black' : ''}`}
+        >
+          Tout voir
+        </button>
+        {categorie.map((cate) => (
+          <button
+            key={cate.id_t_categorie}
+            onClick={() => getAppCate(cate.id_t_categorie)}
+            className={`duration-500 hover:bg-black px-[10px] ${categorieActive === cate.id_t_categorie ? 'bg-black' : ''}`}
+          >
             {cate.lib_court}
           </button>
         ))}
