@@ -6,6 +6,7 @@ const produitRoute = Router();
 
 produitRoute.get('/', ProduitController.getAll);
 produitRoute.get('/categorie', ProduitController.getAllCategorie);
+produitRoute.get('/search/:text', ProduitController.getBySearch);
 produitRoute.get('/categorie/:id', ProduitController.getAllById);
 produitRoute.get('/:id', verifyToken, ProduitController.getById);
 produitRoute.post('/', verifyToken, ProduitController.create);

@@ -20,6 +20,19 @@ export class ProduitController {
       res.status(500).json({ error: err.message });
     }
   }
+  static async getBySearch(req: Request, res: Response): Promise<Response> {
+    try {
+      const text = req.params.text
+      const produits = await ProduitService.getBySearch(text);
+      if (!produits) return res.status(404).json({ message: 'Produit non trouvé' });
+      return res.json(produits);
+    } catch (err) {
+      if (err instanceof Error) {
+        return res.status(500).json({ error: err.message });
+      }
+      return res.status(500).json({ error: 'Une erreur inconnue s\'est produite.' });
+    }
+  }
 
   static async getAllById(req: Request, res: Response): Promise<Response> {
     try {
