@@ -8,13 +8,23 @@ function Panier() {
     const storedPanier = localStorage.getItem('panier');
     
     if (storedPanier) {
-      setPanier(
-        JSON.parse(storedPanier).map((item: Produit) => ({
-          ...item,
-          quantité: item.quantité || 1,
-        }))
+      const parsedPanier: Produit[] = JSON.parse(storedPanier);
+    
+      const mergedPanier = Object.values(
+        parsedPanier.reduce((acc: Record<string, Produit>, item: Produit) => {
+          if (acc[item.id_t_produit]) {
+            acc[item.id_t_produit].quantité += item.quantité || 1;
+          } else {
+            acc[item.id_t_produit] = { ...item, quantité: item.quantité || 1 };
+          }
+          return acc;
+        }, {})
       );
+    
+      setPanier(mergedPanier);
+      console.log(mergedPanier, storedPanier, "panier");
     }
+    
   }, []);
 
   const removeFromPanier = (productId: number) => {
