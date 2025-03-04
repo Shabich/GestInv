@@ -1,35 +1,37 @@
-import React from 'react';
-
-
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function NousConnaitre() {
+  const navigate = useNavigate()
+  const handleNavigate = () => {
+    navigate('/NosProjets')
+  }
+
   return (
     <div style={styles.container}>
       {/** SECTION HERO */}
       <section style={styles.heroSection}>
         <div style={styles.heroContent}>
           <h1 style={styles.heroTitle}>Bienvenue chez Gestiny</h1>
-          <p style={styles.heroSubtitle}>
-            Innovation, Recherche et Bien-être pour Tous
-          </p>
-          <button style={styles.ctaButton}>Découvrir nos projets</button>
+          <p style={styles.heroSubtitle}>Innovation, Recherche et Bien-être pour Tous</p>
+          <button style={styles.ctaButton} onClick={handleNavigate}>
+            Découvrir nos projets
+          </button>
         </div>
       </section>
 
       {/** SECTION À PROPOS */}
       <section style={styles.aboutSection}>
-  <h2 style={styles.sectionTitle}>À propos de Gestiny</h2>
-  <p style={styles.aboutText}>
-    Gestiny est un laboratoire pharmaceutique avant-gardiste, spécialisé dans la 
-    conception de solutions médicales de nouvelle génération. En alliant recherche 
-    de pointe, collaboration internationale et technologies émergentes, notre 
-    engagement est de repenser la santé pour qu’elle soit plus accessible, plus 
-    efficace et plus humaine. Nous croyons fermement que chaque innovation nous 
-    rapproche d’un avenir où la prévention, le bien-être et la guérison ne font 
-    qu’un, et où chaque individu bénéficie d’un accompagnement personnalisé.
-  </p>
-</section>
-
+        <h2 style={styles.sectionTitle}>À propos de Gestiny</h2>
+        <p style={styles.aboutText}>
+          Gestiny est un laboratoire pharmaceutique avant-gardiste, spécialisé dans la conception de
+          solutions médicales de nouvelle génération. En alliant recherche de pointe, collaboration
+          internationale et technologies émergentes, notre engagement est de repenser la santé pour
+          qu’elle soit plus accessible, plus efficace et plus humaine. Nous croyons fermement que
+          chaque innovation nous rapproche d’un avenir où la prévention, le bien-être et la guérison
+          ne font qu’un, et où chaque individu bénéficie d’un accompagnement personnalisé.
+        </p>
+      </section>
 
       {/** SECTION NOS VALEURS */}
       <section style={styles.valuesSection}>
@@ -39,24 +41,23 @@ function NousConnaitre() {
             <div style={styles.valueIcon}>🔬</div>
             <h3 style={styles.valueTitle}>Innovation</h3>
             <p style={styles.valueDescription}>
-              Nous investissons constamment dans la recherche pour offrir des
-              solutions à la pointe de la technologie médicale.
+              Nous investissons constamment dans la recherche pour offrir des solutions à la pointe
+              de la technologie médicale.
             </p>
           </div>
           <div style={styles.valueCard}>
             <div style={styles.valueIcon}>❤️</div>
             <h3 style={styles.valueTitle}>Bien-être</h3>
             <p style={styles.valueDescription}>
-              La santé et la satisfaction de nos patients sont notre priorité
-              absolue.
+              La santé et la satisfaction de nos patients sont notre priorité absolue.
             </p>
           </div>
           <div style={styles.valueCard}>
             <div style={styles.valueIcon}>🌍</div>
             <h3 style={styles.valueTitle}>Responsabilité</h3>
             <p style={styles.valueDescription}>
-              Nous nous engageons à respecter l’environnement et à promouvoir
-              des pratiques responsables dans toutes nos activités.
+              Nous nous engageons à respecter l’environnement et à promouvoir des pratiques
+              responsables dans toutes nos activités.
             </p>
           </div>
         </div>
@@ -74,8 +75,7 @@ function NousConnaitre() {
             />
             <h3 style={styles.labTitle}>Laboratoire de Génétique</h3>
             <p style={styles.labDescription}>
-              Spécialisé dans l’étude du génome humain pour des thérapies
-              personnalisées.
+              Spécialisé dans l’étude du génome humain pour des thérapies personnalisées.
             </p>
           </div>
           <div style={styles.labCard}>
@@ -86,8 +86,7 @@ function NousConnaitre() {
             />
             <h3 style={styles.labTitle}>Laboratoire d’Immunologie</h3>
             <p style={styles.labDescription}>
-              Recherche et développement de vaccins et d’anticorps pour
-              renforcer l’immunité.
+              Recherche et développement de vaccins et d’anticorps pour renforcer l’immunité.
             </p>
           </div>
           <div style={styles.labCard}>
@@ -103,13 +102,11 @@ function NousConnaitre() {
           </div>
         </div>
       </section>
-
-     
     </div>
-  );
+  )
 }
 
-export default NousConnaitre;
+export default NousConnaitre
 
 /**
  * Styles inline (vous pouvez opter pour un fichier CSS/SCSS, styled-components, etc.)
@@ -119,8 +116,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
     backgroundColor: '#f5f5f5',
     color: '#333',
-    
-   
   },
   heroSection: {
     position: 'relative',
@@ -131,8 +126,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: 'center',
     justifyContent: 'center',
     padding: '40px 20px',
-    borderRadius:' 80px 10px 80px 10px'
-    
+    borderRadius: ' 80px 10px 80px 10px',
   },
   heroContent: {
     textAlign: 'center',
@@ -173,7 +167,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     margin: '0 auto',
     fontSize: '1.1rem',
     lineHeight: '1.6',
-     textAlign:'justify'
+    textAlign: 'justify',
   },
 
   valuesSection: {
@@ -259,4 +253,4 @@ const styles: { [key: string]: React.CSSProperties } = {
     color: '#ff6f61',
     cursor: 'pointer',
   },
-};
+}

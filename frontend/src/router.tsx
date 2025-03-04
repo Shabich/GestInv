@@ -8,6 +8,7 @@ import EspacePresse from './page/EspacePresse'
 import AdminPanel from './page/AdminPanel'
 import Login from './page/Login'
 import Panier from './page/Panier'
+import NosProjets from './page/NosProjets'
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
           <Route path="EspacePresse" element={<EspacePresse />} />
           <Route path="AdminPanel" element={<AdminPanel />} />
           <Route path="Panier" element={<Panier />} />
+          <Route path="NosProjets" element={<NosProjets />} />
         </Route>
       </Routes>
     </BrowserRouter>
