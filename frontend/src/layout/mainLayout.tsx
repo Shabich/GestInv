@@ -121,7 +121,7 @@ export default function MainLayout() {
           </nav>
         </div>
       </div>
-      <main className={`p-5 ${isMenuOpen ? 'blur-sm' : ''}`}>
+      <main>
         <div>
           <Outlet />
         </div>

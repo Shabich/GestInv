@@ -30,6 +30,10 @@ function Auth() {
     try {
       console.log('Données envoyées :', { email, password })
 
+      const dataForm = isSignUp 
+      ? { email, password, nom, prenom } 
+      : { email, password };
+    
       const response = await fetch(`http://localhost:3000/api/auth/${endpoint}`, {
         headers: {
           'Content-Type': 'application/json',
@@ -37,7 +41,7 @@ function Auth() {
           Authorization: `Bearer ${token}`,
         },
         method: 'POST',
-        body: JSON.stringify({ email, password, nom, prenom }),
+        body: JSON.stringify(dataForm),
       })
 
       const data = await response.json()
