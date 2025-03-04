@@ -1,53 +1,91 @@
 import { useEffect, useState } from 'react'
 import Card from '../component/Card'
-import { Produit } from '../types' // Importez le type Produit
+import { Categorie, Produit } from '../types' // Import du type Produit
 
 function NosProduits() {
   const [produits, setProduits] = useState<Produit[]>([])
-  const [messageSucces, setMessageSucces] = useState<string | null>(null) // État pour le message de succès
-  const [selectedForme, setSelectedForme] = useState<string>('tout') // Etat pour le filtre
+  const [messageSucces, setMessageSucces] = useState<string | null>(null)
+  const [categorie, setCategorie] = useState<Categorie[]>([])
 
   useEffect(() => {
-    const getProduits = async () => {
-      try {
-        const token = localStorage.getItem('authToken')
-
-        const url =
-          selectedForme === 'tout'
-            ? 'http://localhost:3000/api/produits'
-            : 'http://localhost:3000/api/produits?forme=${selectedForme}'
-
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        })
-
-        if (!response.ok) {
-          throw new Error('Problème avec la requête')
-        }
-
-        const data: Produit[] = await response.json()
-        setProduits(data)
-      } catch (error) {
-        console.error('Erreur de requête:', error)
-      }
-    }
-
     getProduits()
-  }, [selectedForme])
+    getCategories()
 
+    console.log(categorie)
+  }, []) // Le tableau vide assure que les fonctions ne s'exécutent qu'une seule fois
+
+
+  const getProduits = async () => {
+    try {
+      const token = localStorage.getItem('authToken')
+      const url = 'http://localhost:3000/api/produits'
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error('Problème avec la requête')
+      }
+
+      const data: Produit[] = await response.json()
+      setProduits(data)
+    } catch (error) {
+      console.error('Erreur de requête:', error)
+    }
+  }
+  const getCategories = async () => {
+    try {
+      const url = 'http://localhost:3000/api/produits/categorie'
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error('Problème avec la requête')
+      }
+
+      const data = await response.json()
+      setCategorie(data)
+    } catch (error) {
+      console.error('Erreur de requête:', error)
+    }
+  }
   function addToPanier(produit: Produit) {
     const storedPanier = localStorage.getItem('panier')
     const panier: Produit[] = storedPanier ? JSON.parse(storedPanier) : []
     panier.push(produit)
     localStorage.setItem('panier', JSON.stringify(panier))
 
-    // Afficher un message de succès
     setMessageSucces(`${produit.nom_produit} a été ajouté au panier !`)
-    setTimeout(() => setMessageSucces(null), 3000) // Effacer le message après 3 secondes
+    setTimeout(() => setMessageSucces(null), 3000)
+  }
+  async function getAppCate(id: number){
+    try {
+      const url = `http://localhost:3000/api/produits/categorie/${id}`
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error('Problème avec la requête')
+      }
+
+      const data = await response.json()
+      setProduits(data)
+    } catch (error) {
+      console.error('Erreur de requête:', error)
+    }
   }
 
   return (
@@ -59,19 +97,18 @@ function NosProduits() {
           {messageSucces}
         </div>
       )}
-
-      <div className="flex justify-center mb-3">
-        <select
-          value={selectedForme}
-          onChange={e => setSelectedForme(e.target.value)}
-          className="p-2 border border-grey-300 rounded-md"
-        >
-          <option value={'tout'}>Tout</option>
-          <option value={'dermique'}>dermique</option>
-          <option value={'injectable'}>injectable</option>
-          <option value={'médicamenteuse'}>médicamenteuse</option>
-        </select>
-      </div>
+      <nav className=" justify-start"   style={{ backgroundColor: '#007BFF', color:'white' }}>
+      <button
+          onClick={() => getProduits()} className="duration-500 bg-black px-[10px]">
+            Tout voir
+          </button>
+        {categorie.map((cate, index) => (
+          <button key={index} 
+          onClick={() => getAppCate(cate.id_t_categorie)} className="duration-500 hover:bg-black px-[10px]">
+            {cate.lib_court}
+          </button>
+        ))}
+      </nav>
 
       {produits.length === 0 ? (
         <p>Requête produit...</p>

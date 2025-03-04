@@ -17,3 +17,4 @@ export type Produit = {
   image_url?: string; // Propriété optionnelle
 
 };
+

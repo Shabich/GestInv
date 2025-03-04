@@ -6,5 +6,7 @@ export interface Produit {
     dosage: string;
     prix: number;
     laboratoire_fabriquant: string;
+    id_t_categorie: number;
+    image_url: string
   }
   

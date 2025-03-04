@@ -5,13 +5,33 @@ import { Produit } from './produit.interfaces';
 export class ProduitController {
   static async getAll(req: Request, res: Response): Promise<void> {
     try {
-      const {forme} = req.query; //pour récupérer le filtre de la requête
-      const produits = forme 
-      ? await ProduitService.getByForme(forme as string)
-      : await ProduitService.getAll();
+      const produits = await ProduitService.getAll();
       res.json(produits);
     } catch (err : any) {
       res.status(500).json({ error: err.message });
+    }
+  }
+
+  static async getAllCategorie(req: Request, res: Response): Promise<void> {
+    try {
+      const categories = await ProduitService.getAllCategorie();
+      res.json(categories);
+    } catch (err : any) {
+      res.status(500).json({ error: err.message });
+    }
+  }
+
+  static async getAllById(req: Request, res: Response): Promise<Response> {
+    try {
+      const id = parseInt(req.params.id, 10);
+      const produits = await ProduitService.getByAllId(id);
+      if (!produits) return res.status(404).json({ message: 'Produit non trouvé' });
+      return res.json(produits);
+    } catch (err) {
+      if (err instanceof Error) {
+        return res.status(500).json({ error: err.message });
+      }
+      return res.status(500).json({ error: 'Une erreur inconnue s\'est produite.' });
     }
   }
 

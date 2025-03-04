@@ -6,6 +6,7 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
 import MenuItem from '@mui/material/MenuItem'
+import { Categorie } from '../types'
 
 interface Produit {
   nom_produit: string
@@ -14,6 +15,8 @@ interface Produit {
   prix: number
   laboratoire_fabriquant: string
   forme: string // Ajout du champ `forme`
+  id_t_categorie: number
+  image_url: string
 }
 
 interface FormDialogProps {
@@ -26,8 +29,8 @@ interface FormDialogProps {
 const formesOptions = [
   { label: 'Orale', value: 'orale' },
   { label: 'Injectable', value: 'injectable' },
-  { label: 'Topique', value: 'topique' },
-  { label: 'Autre', value: 'autre' },
+  { label: 'Dermique', value: 'dermique' },
+  { label: 'Médicamenteuse', value: 'médicamenteuse' },
 ]
 
 const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadProduits }) => {
@@ -38,14 +41,19 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadPr
     prix: 0,
     laboratoire_fabriquant: '',
     forme: '', // Initialisation du champ `forme`
+    id_t_categorie: 0,
+    image_url: '',
   })
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
   const [messageSucces, setMessageSucces] = useState<string | null>(null) // État pour le message de succès
+  const [categorie, setCategorie] = useState<Categorie[]>([])
 
   const token = localStorage.getItem('authToken')
 
   useEffect(() => {
+    getCategories()
+
     if (id !== null && open) {
       const getProduit = async () => {
         setLoading(true)
@@ -85,6 +93,8 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadPr
         prix: 0,
         laboratoire_fabriquant: '',
         forme: '', // Réinitialisation du champ `forme`
+        id_t_categorie: 0,
+        image_url: '',
       })
       setError(null)
     }
@@ -102,6 +112,14 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadPr
     setProduit(prev => ({
       ...prev,
       forme: e.target.value as string, // Gestion du champ `forme`
+    }))
+  }
+  const handleSelectCateChange = (e: React.ChangeEvent<{ value: unknown }>) => {
+    console.log(categorie)
+
+    setProduit(prev => ({
+      ...prev,
+      id_t_categorie: e.target.value as number, // Gestion du champ `forme`
     }))
   }
 
@@ -139,11 +157,37 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadPr
     }
   }
 
+  const getCategories = async () => {
+    try {
+      const url = 'http://localhost:3000/api/produits/categorie'
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error('Problème avec la requête')
+      }
+
+      const data = await response.json()
+      setCategorie(data)
+    } catch (error) {
+      console.error('Erreur de requête:', error)
+    }
+  }
   return (
     <>
       {messageSucces && (
         <div
-          style={{ backgroundColor: 'green', color: 'white', padding: '10px',marginTop: '100px', textAlign: 'center' }}
+          style={{
+            backgroundColor: 'green',
+            color: 'white',
+            padding: '10px',
+            marginTop: '100px',
+            textAlign: 'center',
+          }}
         >
           {messageSucces}
         </div>
@@ -211,6 +255,17 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadPr
                   variant="standard"
                 />
                 <TextField
+                  margin="dense"
+                  id="image_url"
+                  name="image_url"
+                  label="Image"
+                  value={produit.image_url}
+                  onChange={handleChange}
+                  fullWidth
+                  variant="standard"
+                />
+
+                <TextField
                   select
                   required
                   margin="dense"
@@ -218,7 +273,7 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadPr
                   name="forme"
                   label="Forme"
                   value={produit.forme}
-                  onChange={handleSelectChange}
+                  onChange={handleSelectChange} // Utilise bien la fonction de mise à jour
                   fullWidth
                   variant="standard"
                 >
@@ -227,6 +282,27 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadPr
                       {option.label}
                     </MenuItem>
                   ))}
+                </TextField>
+
+                <TextField
+                  select
+                  required
+                  margin="dense"
+                  id="id_t_categorie"
+                  name="id_t_categorie"
+                  label="Catégorie"
+                  value={produit.id_t_categorie}
+                  onChange={handleSelectCateChange}
+                  fullWidth
+                  variant="standard"
+                >
+                  {Array.isArray(categorie)
+                    ? categorie.map(option => (
+                        <MenuItem key={option.id_t_categorie} value={option.id_t_categorie}>
+                          {option.lib_long}
+                        </MenuItem>
+                      ))
+                    : []}
                 </TextField>
               </>
             )}
