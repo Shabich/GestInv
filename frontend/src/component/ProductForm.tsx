@@ -53,8 +53,8 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadPr
 
   useEffect(() => {
     getCategories()
-
     if (id !== null && open) {
+      
       const getProduit = async () => {
         setLoading(true)
         setError(null)
@@ -73,7 +73,8 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadPr
           }
 
           const data = await response.json()
-          setProduit(data)
+          console.log(data, 'data')
+          setProduit(data[0])
         } catch (error: unknown) {
           console.error('Erreur de requête :', error)
           console.error(

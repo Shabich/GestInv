@@ -32,10 +32,10 @@ export class ProduitService {
   }
 
   static async update(id: number, produit: Produit): Promise<void> {
-    const { nom_produit, description, forme, dosage, prix, laboratoire_fabriquant } = produit
+    const { nom_produit, description, forme, dosage, prix, laboratoire_fabriquant, id_t_categorie, image_url } = produit
     await db.query(
-      'UPDATE t_produit SET nom_produit = ?, description = ?, forme = ?, dosage = ?, prix = ?, laboratoire_fabriquant = ? WHERE id_t_produit = ?',
-      [nom_produit, description, forme, dosage, prix, laboratoire_fabriquant, id],
+      'UPDATE t_produit SET nom_produit = ?, description = ?, forme = ?, dosage = ?, prix = ?, laboratoire_fabriquant = ?, id_t_categorie = ?, image_url = ? WHERE id_t_produit = ?',
+      [nom_produit, description, forme, dosage, prix, laboratoire_fabriquant , id_t_categorie, image_url, id],
     )
   }
 
