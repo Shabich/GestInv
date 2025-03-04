@@ -6,7 +6,7 @@ function Panier() {
   
   useEffect(() => {
     const storedPanier = localStorage.getItem('panier');
-    
+
     if (storedPanier) {
       const parsedPanier: Produit[] = JSON.parse(storedPanier);
     
@@ -207,9 +207,17 @@ function Panier() {
               ))}
             </div>
           )}
+
+
+
+
+          
         </div>
 
         {/* Colonne du récapitulatif de la commande */}
+        {panier.length === 0 ? (
+            ''
+          ) : (
         <div style={recapColumnStyle}>
           <div
             style={{
@@ -303,8 +311,10 @@ function Panier() {
             </button>
           </div>
         </div>
+        )}
       </div>
     </div>
+    
   );
 }
 
