@@ -34,7 +34,7 @@ export class UsersController {
         return res.status(401).json({ err: "Identifiants incorrects" });
       }
   
-      res.json({ message: "User trouvé", user });
+      res.json( user );
     } catch (e: any) {
       res.status(500).json({ err: e.message });
     }

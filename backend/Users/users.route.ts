@@ -3,7 +3,7 @@ import { UsersController } from './users.controller'
 import { verifyToken } from '../Authent/auth.middleware'
 
 const userRoute = Router()
-userRoute.get('/info', UsersController.getUserInfo)
+userRoute.post('/info', UsersController.getUserInfo)
 userRoute.put('/:id', verifyToken,UsersController.update)
 userRoute.get('/', verifyToken,UsersController.getAll)
 userRoute.get('/:id', verifyToken,UsersController.getById)
