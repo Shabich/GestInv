@@ -1,5 +1,6 @@
 import db from '../config/db'
 import { Users } from './users.interfaces'
+import bcrypt from "bcryptjs"; // Pour vérifier les mots de passe hachés
 
 export class UsersService {
   static async getAll(): Promise<Users[]> {
@@ -12,6 +13,43 @@ export class UsersService {
     return (rows[0] as Users) || null
   }
 
+    static async getUser(email: string): Promise<Users | null> {
+      try {
+        const [rows]: any = await db.query(
+          "SELECT * FROM t_user WHERE adresse_mail = ?",
+          [email]
+        );
+          if (rows.length === 0) {
+          return null;
+        }
+        return rows[0] as Users;
+      } catch (error) {
+        console.error("Erreur lors de la récupération de l'utilisateur :", error);
+        throw new Error("Erreur serveur");
+      }
+    }
+  
+    static async validateUser(email: string, password: string): Promise<Users | null> {
+      try {
+        const user = await this.getUser(email);
+        if (!user) {
+          return null;
+        }
+        if (!user.password) {
+          return null;
+        }
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+          return null;
+        }
+        return user;
+      } catch (error) {
+        throw new Error("Erreur serveur");
+      }
+    }
+    
+  
+  
   static async update(user: Users, id: number): Promise<void> {
     const {nom,prenom,adresse_mail,adresse,num_tel,date_naissance,id_t_rappel,admin } = user;
     const formatted_date_naissance = date_naissance 

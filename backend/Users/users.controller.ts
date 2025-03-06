@@ -20,6 +20,26 @@ export class UsersController {
       res.status(500).json({err: e.message})
     }
   }
+  static async getUserInfo(req: Request, res: Response) {
+    try {  
+      const email = req.body.adresse_mail;
+      const password = req.body.password;
+  
+      if (!email || !password) {
+        return res.status(400).json({ err: "Email ou mot de passe manquant" });
+      }
+  
+      const user = await UsersService.validateUser(email, password);
+      if (!user) {
+        return res.status(401).json({ err: "Identifiants incorrects" });
+      }
+  
+      res.json({ message: "User trouvé", user });
+    } catch (e: any) {
+      res.status(500).json({ err: e.message });
+    }
+  }
+  
   static async update(req: Request, res: Response): Promise<void> {
     try{
       const id = parseInt(req.params.id, 10);
