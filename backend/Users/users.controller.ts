@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { UsersService } from './users.service'
-import { Users } from './users.interfaces'
+import bcrypt from 'bcryptjs';
 
 export class UsersController {
   static async getAll(req: Request, res: Response): Promise<void> {
@@ -40,16 +40,35 @@ export class UsersController {
     }
   }
   
-  static async update(req: Request, res: Response): Promise<void> {
-    try{
+
+
+
+  static async update(req: Request, res: Response){
+    try {
       const id = parseInt(req.params.id, 10);
-      const user = req.body as Users;
-      await UsersService.update(user, id);
-      res.json({ message: 'User mis à jour' });
-    }catch(e: any){
-      res.status(500).json({err: e.message})
+      const { current_password, new_password, adresse_mail, ancienne_adresse_mail, ...user } = req.body; // Extraction des champs
+  
+      if (!id || !current_password) {
+        return res.status(400).json({ message: "ID et mot de passe actuel requis" });
+      }
+  
+      const storedUser = await UsersService.validateUser(ancienne_adresse_mail, current_password);
+      
+      if (!storedUser) {
+        return res.status(404).json({ message: "Utilisateur non trouvé" });
+      }
+
+      const passwordToUpdate = new_password ? await bcrypt.hash(new_password, 10) : storedUser.password;
+      const adresseMailToUpdate = (adresse_mail != ancienne_adresse_mail) ? adresse_mail : ancienne_adresse_mail;
+      await UsersService.update({ ...user, adresse_mail:adresseMailToUpdate, password: passwordToUpdate }, id);
+  
+      res.json({ message: "Utilisateur mis à jour" });
+    } catch (e: any) {
+      res.status(500).json({ err: e.message });
     }
   }
+  
+  
   static async delete(req: Request, res: Response): Promise<void> {
     try {
       const id = parseInt(req.params.id, 10)

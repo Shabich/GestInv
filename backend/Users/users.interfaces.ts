@@ -1,5 +1,5 @@
 export interface Users {
-  id_t_user: number
+  id_t_user?: number
   nom?: string
   prenom?: string
   adresse_mail?: string
@@ -8,5 +8,6 @@ export interface Users {
   date_naissance?: Date
   id_t_rappel?: number
   password? : string
-  admin: boolean
+  
+  admin?: boolean
 }
