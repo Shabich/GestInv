@@ -5,17 +5,20 @@ export const signup = async (
   email: string,
   password: string,
   nom: string,
-  prenom: string
+  prenom: string,
+  adresse: string,
+  num_tel: string,
+  date_naissance: Date
 ): Promise<number> => {
   const existingUser = await getUserByEmail(email)
   if (existingUser) {
     throw new Error('Utilisateur déjà existant')
   }
-  const userId = await createUser(email, password, nom, prenom)
+  const userId = await createUser(email, password, nom, prenom, adresse, num_tel, date_naissance)
   return userId
 }
 
-export const signin = async (email: string, password: string): Promise<string> => {
+export const signin = async (email: string, password: string) => {
   const user = await getUserByEmail(email)
   if (!user) {
     throw new Error("Verifiez le mot de passe et l'adresse mail")
@@ -26,6 +29,18 @@ export const signin = async (email: string, password: string): Promise<string> =
     throw new Error("Verifiez le mot de passe et l'adresse mail")
   }
 
-  const token = jwt.sign({ id: user.id }, 'secretKey', { expiresIn: '1h' })
+  const token = jwt.sign({ id: user.id_t_user }, 'secretKey', { expiresIn: '1h' })
+  
+  try {
+    const decoded = jwt.verify(token, 'secretKey');
+    if (typeof decoded !== "string") {
+      console.log("ID de l'utilisateur :", decoded.id); 
+  }
+    console.log("Token décodé :", decoded);
+} catch (err) {
+    console.error("Erreur :", err);
+}
+
+
   return token
 }

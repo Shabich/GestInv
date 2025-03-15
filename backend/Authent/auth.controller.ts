@@ -5,13 +5,13 @@ export class AuthController {
   static async Signup(req: Request, res: Response): Promise<void> {
     try {
       console.log(req.body)
-      const { email, password, nom, prenom } = req.body
+      const { email, password, nom, prenom, adresse , num_tel, date_naissance,} = req.body
       if (!email || !password || !nom || !prenom) {
         res.status(400).json({ message: "L'un des champs est manquant" })
         return
       }
 
-      const userId = await signup(email, password, nom, prenom)
+      const userId = await signup(email, password, nom, prenom, adresse, num_tel, date_naissance)
       res.status(201).json({ message: 'Compte crée', userId })
     } catch (error: any) {
       res.status(400).json({ message: error.message })

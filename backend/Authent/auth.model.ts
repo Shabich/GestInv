@@ -6,8 +6,8 @@ export const getUserByEmail = async (email: string): Promise<any> => {
   return (rows as any[])[0];
 };
 
-export const createUser = async (email: string, password: string, nom: string, prenom:string): Promise<number> => {
+export const createUser = async (email: string, password: string, nom: string, prenom:string, adresse: string, num_tel: string, date_naissance: Date ): Promise<number> => {
   const hashedPassword = await bcrypt.hash(password, 10);
-  const [result] = await db.execute('INSERT INTO t_user (adresse_mail, password, nom, prenom) VALUES (?, ?, ?, ?)', [email, hashedPassword, nom, prenom]);
+  const [result] = await db.execute('INSERT INTO t_user (adresse_mail, password, nom, prenom, adresse, num_tel, date_naissance) VALUES (?, ?, ?, ?, ?, ?, ?)', [email, hashedPassword, nom, prenom, adresse, num_tel, date_naissance]);
   return (result as any).insertId;
 };

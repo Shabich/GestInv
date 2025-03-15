@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Produit } from '../types';
+import {jwtDecode} from "jwt-decode";
+
 
 function Panier() {
   const [panier, setPanier] = useState<Produit[]>([]);
@@ -26,6 +28,37 @@ function Panier() {
     }
     
   }, []);
+
+
+
+  const purchasePanier = () => {
+      const token = localStorage.getItem('authToken');
+  
+      if (!token) {
+          console.error("Aucun token trouvé dans le localStorage.");
+          return;
+      }
+  
+      console.log("Token récupéré :", token);
+  
+      try {
+          // Décoder le token sans vérification de signature
+          const decoded: any = jwtDecode(token);
+  
+          console.log("Token décodé :", decoded);
+  
+          if (decoded.id) {
+              console.log("ID de l'utilisateur :", decoded.id);
+              return decoded.id;
+          } else {
+              console.error("L'ID de l'utilisateur est introuvable dans le token.");
+          }
+      } catch (err) {
+          console.error("Erreur lors du décodage du token :", err);
+      }
+  };
+  
+
 
   const removeFromPanier = (productId: number) => {
     const updatedPanier = panier.filter(
@@ -103,6 +136,7 @@ function Panier() {
     borderRadius: '8px',
   };
 
+   
   return (
     <div style={containerStyle}>
       <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>
@@ -208,10 +242,6 @@ function Panier() {
             </div>
           )}
 
-
-
-
-          
         </div>
 
         {/* Colonne du récapitulatif de la commande */}
@@ -306,6 +336,7 @@ function Panier() {
                 fontSize: '16px',
                 fontWeight: 'bold',
               }}
+              onClick={purchasePanier}
             >
               Passer la commande
             </button>
