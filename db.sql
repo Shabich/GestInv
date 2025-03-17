@@ -9,6 +9,39 @@ CREATE TABLE t_categorie (
   PRIMARY KEY (id_t_categorie)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- Table des pharmacies
+CREATE TABLE t_pharmacie (
+  id_t_pharmacie INT NOT NULL,
+  ville VARCHAR(50) NOT NULL,
+  adresse VARCHAR(255) DEFAULT NULL,
+  region VARCHAR(50) DEFAULT NULL,
+  departement VARCHAR(50) DEFAULT NULL,
+  numero_telephone VARCHAR(15) DEFAULT NULL,
+  lib_court VARCHAR(50) DEFAULT NULL,
+  lib_long VARCHAR(255) DEFAULT NULL,
+  date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  date_modification TIMESTAMP NULL DEFAULT NULL,
+  createur INT DEFAULT NULL,
+  PRIMARY KEY (id_t_pharmacie)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Table des utilisateurs
+CREATE TABLE t_user (
+  id_t_user INT NOT NULL,
+  nom VARCHAR(50) DEFAULT NULL,
+  prenom VARCHAR(50) DEFAULT NULL,
+  adresse_mail VARCHAR(100) DEFAULT NULL,
+  adresse VARCHAR(255) DEFAULT NULL,
+  num_tel VARCHAR(15) DEFAULT NULL,
+  date_naissance DATE DEFAULT NULL,
+  password VARCHAR(255) DEFAULT NULL,
+  admin TINYINT DEFAULT '0',
+  id_t_pharmacie INT DEFAULT NULL,
+  PRIMARY KEY (id_t_user),
+  CONSTRAINT fk_user_pharmacie FOREIGN KEY (id_t_pharmacie) REFERENCES t_pharmacie(id_t_pharmacie)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
 -- Table des commandes
 CREATE TABLE t_commande (
   id_t_commande INT NOT NULL,
@@ -32,22 +65,6 @@ CREATE TABLE t_log_admin (
   CONSTRAINT fk_log_admin_admin FOREIGN KEY (id_admin) REFERENCES t_user(id_t_user)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Table des pharmacies
-CREATE TABLE t_pharmacie (
-  id_t_pharmacie INT NOT NULL,
-  ville VARCHAR(50) NOT NULL,
-  adresse VARCHAR(255) DEFAULT NULL,
-  region VARCHAR(50) DEFAULT NULL,
-  departement VARCHAR(50) DEFAULT NULL,
-  numero_telephone VARCHAR(15) DEFAULT NULL,
-  lib_court VARCHAR(50) DEFAULT NULL,
-  lib_long VARCHAR(255) DEFAULT NULL,
-  date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  date_modification TIMESTAMP NULL DEFAULT NULL,
-  createur INT DEFAULT NULL,
-  PRIMARY KEY (id_t_pharmacie)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 -- Table des produits
 CREATE TABLE t_produit (
   id_t_produit INT NOT NULL,
@@ -63,22 +80,6 @@ CREATE TABLE t_produit (
   id_t_categorie INT DEFAULT NULL,
   PRIMARY KEY (id_t_produit),
   CONSTRAINT fk_produit_categorie FOREIGN KEY (id_t_categorie) REFERENCES t_categorie(id_t_categorie)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- Table des utilisateurs
-CREATE TABLE t_user (
-  id_t_user INT NOT NULL,
-  nom VARCHAR(50) DEFAULT NULL,
-  prenom VARCHAR(50) DEFAULT NULL,
-  adresse_mail VARCHAR(100) DEFAULT NULL,
-  adresse VARCHAR(255) DEFAULT NULL,
-  num_tel VARCHAR(15) DEFAULT NULL,
-  date_naissance DATE DEFAULT NULL,
-  password VARCHAR(255) DEFAULT NULL,
-  admin TINYINT DEFAULT '0',
-  id_t_pharmacie INT DEFAULT NULL,
-  PRIMARY KEY (id_t_user),
-  CONSTRAINT fk_user_pharmacie FOREIGN KEY (id_t_pharmacie) REFERENCES t_pharmacie(id_t_pharmacie)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Table de jointure entre commandes et produits

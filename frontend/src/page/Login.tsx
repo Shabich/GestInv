@@ -6,6 +6,9 @@ function Auth() {
   const [password, setPassword] = useState('')
   const [nom, setNom] = useState('')
   const [prenom, setPrenom] = useState('')
+  const [adresse, setAdresse] = useState('')
+  const [num_tel, setNum_tel] = useState('')
+  const [date_naissance, setDate_naissance] = useState('')
   const [isSignUp, setIsSignUp] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [errorMessage, setErrorMessage] = useState('') // Ajout pour afficher des erreurs
@@ -30,10 +33,10 @@ function Auth() {
     try {
       console.log('Données envoyées :', { email, password })
 
-      const dataForm = isSignUp 
-      ? { email, password, nom, prenom } 
-      : { email, password };
-    
+      const dataForm = isSignUp
+        ? { email, password, nom, prenom, adresse, num_tel, date_naissance }
+        : { email, password }
+
       const response = await fetch(`http://localhost:3000/api/auth/${endpoint}`, {
         headers: {
           'Content-Type': 'application/json',
@@ -116,6 +119,27 @@ function Auth() {
                     onChange={e => setPrenom(e.target.value)}
                   />
                 </div>
+                <input
+                  className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
+                  type=""
+                  placeholder="Adresse"
+                  value={adresse}
+                  onChange={e => setAdresse(e.target.value)}
+                />
+                <input
+                  className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
+                  type=""
+                  placeholder="Téléphone"
+                  value={num_tel}
+                  onChange={e => setNum_tel(e.target.value)}
+                />
+                <input
+                  className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
+                  type=""
+                  placeholder="date naissance"
+                  value={date_naissance}
+                  onChange={e => setDate_naissance(e.target.value)}
+                />
               </>
             )}
 
