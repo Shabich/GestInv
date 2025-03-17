@@ -1,0 +1,55 @@
+<input
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={() => setIsChecked(!isChecked)}
+                  />
+
+              {!isChecked && (
+                <input
+                  className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
+                  type="date"
+                  placeholder="Date de naissance"
+                  value={date_naissance}
+                  onChange={e => setDate_naissance(e.target.value)}
+                />
+              )}
+
+              {isChecked && (
+                <>
+                  <input
+                    className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
+                    type="text"
+                    placeholder="Ville"
+                    value={ville}
+                    onChange={e => setVille(e.target.value)}
+                  />
+                  <input
+                    className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
+                    type="text"
+                    placeholder="Région"
+                    value={region}
+                    onChange={e => setRegion(e.target.value)}
+                  />
+                  <input
+                    className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
+                    type="text"
+                    placeholder="Département"
+                    value={departement}
+                    onChange={e => setDepartement(e.target.value)}
+                  />
+                  <input
+                    className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
+                    type="text"
+                    placeholder="Lib Court"
+                    value={lib_court}
+                    onChange={e => setLib_court(e.target.value)}
+                  />
+                  <input
+                    className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
+                    type="text"
+                    placeholder="Lib Long"
+                    value={lib_long}
+                    onChange={e => setLib_long(e.target.value)}
+                  />
+                </>
+              )}

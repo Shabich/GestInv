@@ -12,6 +12,7 @@ function Auth() {
   const [isSignUp, setIsSignUp] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [errorMessage, setErrorMessage] = useState('') // Ajout pour afficher des erreurs
+  const [isChecked, setIsChecked] = useState(false)
   // Récupérer le token
   const token = localStorage.getItem('authToken')
   const navigate = useNavigate()
@@ -103,6 +104,60 @@ function Auth() {
             {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
             {isSignUp && (
               <>
+                <div className="flex justify-around">
+                  <p>Entreprise ?</p>
+                  <div>
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={() => setIsChecked(!isChecked)}
+                    />
+                    <label htmlFor="">Oui</label>
+                  </div>
+                </div>
+
+                {/* {isChecked && (
+                <>
+                  <input
+                    className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
+                    type="text"
+                    placeholder="Ville"
+                    value={ville}
+                    onChange={e => setVille(e.target.value)}
+                  />
+                  <input
+                    className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
+                    type="text"
+                    placeholder="Région"
+                    value={region}
+                    onChange={e => setRegion(e.target.value)}
+                  />
+                  <input
+                    className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
+                    type="text"
+                    placeholder="Département"
+                    value={departement}
+                    onChange={e => setDepartement(e.target.value)}
+                  />
+                  <input
+                    className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
+                    type="text"
+                    placeholder="Lib Court"
+                    value={lib_court}
+                    onChange={e => setLib_court(e.target.value)}
+                  />
+                  <input
+                    className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
+                    type="text"
+                    placeholder="Lib Long"
+                    value={lib_long}
+                    onChange={e => setLib_long(e.target.value)}
+                  />
+                </>
+              )}
+            </>
+          )} */}
+
                 <div className="flex gap-3 max-w-96">
                   <input
                     className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
@@ -133,13 +188,16 @@ function Auth() {
                   value={num_tel}
                   onChange={e => setNum_tel(e.target.value)}
                 />
-                <input
-                  className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
-                  type=""
-                  placeholder="date naissance"
-                  value={date_naissance}
-                  onChange={e => setDate_naissance(e.target.value)}
-                />
+
+                {!isChecked && (
+                  <input
+                    className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
+                    type="date"
+                    placeholder="Date de naissance"
+                    value={date_naissance}
+                    onChange={e => setDate_naissance(e.target.value)}
+                  />
+                )}
               </>
             )}
 
