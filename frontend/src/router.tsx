@@ -9,6 +9,7 @@ import AdminPanel from './page/AdminPanel'
 import Login from './page/Login'
 import Panier from './page/Panier'
 import NosProjets from './page/NosProjets'
+import Profile from './page/Profile'
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="AdminPanel" element={<AdminPanel />} />
           <Route path="Panier" element={<Panier />} />
           <Route path="NosProjets" element={<NosProjets />} />
+          <Route path="Profile" element={<Profile />} />
         </Route>
       </Routes>
     </BrowserRouter>
