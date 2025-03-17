@@ -8,7 +8,12 @@ function Auth() {
   const [prenom, setPrenom] = useState('')
   const [adresse, setAdresse] = useState('')
   const [num_tel, setNum_tel] = useState('')
-  const [date_naissance, setDate_naissance] = useState('')
+  // const [date_naissance, setDate_naissance] = useState('')
+  // const [ville, setVille] = useState('');
+  // const [region, setRegion] = useState('');
+  // const [departement, setDepartement] = useState('');
+  // const [lib_court, setLib_court] = useState('');
+  // const [lib_long, setLib_long] = useState('');
   const [isSignUp, setIsSignUp] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [errorMessage, setErrorMessage] = useState('') // Ajout pour afficher des erreurs
