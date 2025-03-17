@@ -3,7 +3,6 @@
 ## Introduction
 L'application web GSB est une plateforme e-commerce permettant aux utilisateurs d'acheter des produits pharmaceutiques en ligne. Ce projet est structuré en **monorepo**, intégrant **frontend** et **backend** dans un même dépôt.
 
-Ce projet a été réalisé par **Thomas de Almeida**.
 
 ## Technologies Utilisées
 - **Frontend** : React, TypeScript, Tailwind CSS, Vite
