@@ -6,10 +6,13 @@ function Auth() {
   const [password, setPassword] = useState('')
   const [nom, setNom] = useState('')
   const [prenom, setPrenom] = useState('')
+  const [adresse, setAdresse] = useState('')
+  const [numTel, setNumTel] = useState('')
+  const [dateNaissance, setDateNaissance] = useState('')
   const [isSignUp, setIsSignUp] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('') // Ajout pour afficher des erreurs
-  // Récupérer le token
+  const [errorMessage, setErrorMessage] = useState('')
+
   const token = localStorage.getItem('authToken')
   const navigate = useNavigate()
 
@@ -18,27 +21,27 @@ function Auth() {
       setIsAuthenticated(true)
     }
   }, [token])
+
   if (isAuthenticated) {
     navigate('/')
   }
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     const endpoint = isSignUp ? 'signup' : 'signin'
-    setErrorMessage('') // Réinitialiser les erreurs
+    setErrorMessage('')
 
     try {
       console.log('Données envoyées :', { email, password })
 
-      const dataForm = isSignUp 
-      ? { email, password, nom, prenom } 
-      : { email, password };
-    
+      const dataForm = isSignUp
+        ? { email, password, nom, prenom, adresse, num_tel: numTel, date_naissance: dateNaissance }
+        : { email, password }
+
       const response = await fetch(`http://localhost:3000/api/auth/${endpoint}`, {
         headers: {
           'Content-Type': 'application/json',
-
-          Authorization: `Bearer ${token}`,
         },
         method: 'POST',
         body: JSON.stringify(dataForm),
@@ -56,10 +59,9 @@ function Auth() {
         const loginResponse = await fetch(`http://localhost:3000/api/auth/signin`, {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
           },
           method: 'POST',
-          body: JSON.stringify({ nom, email, password }),
+          body: JSON.stringify({ email, password }),
         })
 
         const loginData = await loginResponse.json()
@@ -86,36 +88,58 @@ function Auth() {
       console.error(
         error instanceof Error ? error.message : 'Une erreur inattendue lors de la connexion.',
       )
+      setErrorMessage(error instanceof Error ? error.message : 'Une erreur est survenue')
     }
   }
 
   return (
     <div>
       <div className="flex justify-center p-20">
-        <div className="flex flex-col justify-center items-center p-5 bg-white shadow-xl p-9 rounded-md gap-4">
+        <div className="flex flex-col justify-center items-center p-5 bg-white shadow-xl rounded-md gap-4">
           <div className="flex flex-col">
             <p>{isSignUp ? 'Se créer un compte' : 'Se connecter à son compte'}</p>
           </div>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+
             {isSignUp && (
               <>
-                <div className="flex gap-3 max-w-96">
                   <input
                     className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
-                    type=""
+                    type="text"
                     placeholder="Nom"
                     value={nom}
                     onChange={e => setNom(e.target.value)}
                   />
                   <input
                     className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
-                    type=""
+                    type="text"
                     placeholder="Prénom"
                     value={prenom}
                     onChange={e => setPrenom(e.target.value)}
                   />
-                </div>
+                
+                <input
+                  className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
+                  type="text"
+                  placeholder="Adresse"
+                  value={adresse}
+                  onChange={e => setAdresse(e.target.value)}
+                />
+                <input
+                  className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
+                  type="tel"
+                  placeholder="Numéro de téléphone"
+                  value={numTel}
+                  onChange={e => setNumTel(e.target.value)}
+                />
+                <input
+                  className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
+                  type="date"
+                  placeholder="Date de naissance"
+                  value={dateNaissance}
+                  onChange={e => setDateNaissance(e.target.value)}
+                />
               </>
             )}
 
@@ -123,14 +147,14 @@ function Auth() {
               <input
                 className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
                 type="email"
-                placeholder="mail"
+                placeholder="Adresse mail"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
               />
               <input
                 className="border border-gray-300 focus:border-black w-60 p-2 rounded-md focus:outline-none"
                 type="password"
-                placeholder="password"
+                placeholder="Mot de passe"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
               />
