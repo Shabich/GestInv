@@ -4,6 +4,9 @@ import authRoute from './Authent/auth.route'
 import produitRoute from './Produits/produit.route'
 import userRoute from './Users/users.route'
 import commandeRoute from './Commande/commande.route'
+import * as dotenv from 'dotenv'
+
+dotenv.config()
 import pharmacieRoute from './Pharmacie/pharmacie.route'
 
 const app = express()
