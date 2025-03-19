@@ -8,13 +8,14 @@ export const signup = async (
   prenom: string,
   adresse: string,
   num_tel: string,
-  date_naissance: Date
+  date_naissance: Date,
+  id_t_pharmacie : number
 ): Promise<number> => {
   const existingUser = await getUserByEmail(email)
   if (existingUser) {
     throw new Error('Utilisateur déjà existant')
   }
-  const userId = await createUser(email, password, nom, prenom, adresse, num_tel, date_naissance)
+  const userId = await createUser(email, password, nom, prenom, adresse, num_tel, date_naissance, id_t_pharmacie)
   return userId
 }
 
