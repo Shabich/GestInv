@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import Logo from '/images/gsb-logo.png'
-import { ShoppingCart } from '@mui/icons-material'
+import { ShoppingCart, AccountCircle } from '@mui/icons-material'
+
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 
 export default function MainLayout() {
   const navigate = useNavigate()
@@ -35,15 +37,40 @@ export default function MainLayout() {
             <a href="/AdminPanel" className="duration-500 hover:bg-silver px-[10px]">
               Panneau d'administration
             </a>
+
             <a href="/Panier" className="duration-500 hover:bg-silver px-[10px]">
-              <ShoppingCart /> 
-              {/* Si possible ajouter un numéro pour le nombre d'item dans le shoppingCart */}
+              <ShoppingCart />
             </a>
-            <div className="flex justify-between items-center min-w-28">
-              <button onClick={handleLogout} className="text-black hover:bg-silver px-">
-                {connected ? 'Log out' : 'Log in'}
-              </button>
-            </div>
+
+            {connected ? (
+              <Menu as="div" className="">
+                <div>
+                  <MenuButton className="relative flex rounded-full bg-gray-800 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
+                    <AccountCircle/>
+                  </MenuButton>
+                </div>
+                <MenuItems
+                  transition
+                  className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+                >
+                  <MenuItem>
+                    <a
+                      href="#"
+                      className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
+                    >
+                      Profil
+                    </a>
+                  </MenuItem>
+                  <MenuItem>
+                    <button className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden" onClick={handleLogout}>{connected ? 'Log out' : 'Log in'}</button>
+                  </MenuItem>
+                </MenuItems>
+              </Menu>
+            ) : (
+                <button onClick={handleLogout} className="text-black hover:bg-silver px-[10px]">
+                  {connected ? 'Log out' : 'Log in'}
+                </button>
+            )}
           </nav>
           <button className="lg:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             <svg
@@ -99,6 +126,7 @@ export default function MainLayout() {
             >
               Espace presse
             </a>
+
             <a
               href="/AdminPanel"
               className="block px-4 py-2 hover:bg-gray-800 text-black rounded-lg transition duration-300"
