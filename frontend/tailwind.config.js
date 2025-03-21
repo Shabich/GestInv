@@ -18,7 +18,8 @@ export default {
       'clearBlue' : '#8fb1f8',
       'darkBlue' : '#0667cf',
       'black':"#001524",
-      'gray':"#050a14"
+      'gray':"#050a14",
+      'red': '#FF0000'
     },
     extend: {
       backgroundImage: {
