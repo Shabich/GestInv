@@ -113,50 +113,61 @@ function NosProduits() {
       } catch (error) {
         console.error('Erreur de requête:', error)
       }
-    }else{
+    } else {
       getProduits()
     }
   }
 
   return (
     <>
-      {messageSucces && (
-        <div style={{ backgroundColor: 'green', color: 'white', padding: '10px', textAlign: 'center' }}>
-          {messageSucces}
-        </div>
-      )}
+      <div className="flex flex-col gap-[10px] px-9">
+        <input
+          type="text"
+          placeholder="Rechercher un produit..."
+          value={searchTerm}
+          onChange={handleSearch}
+          className="border p-2 m-2 w-full"
+        />
 
-      <input
-        type="text"
-        placeholder="Rechercher un produit..."
-        value={searchTerm}
-        onChange={handleSearch}
-        className="border p-2 m-2 w-full"
-      />
-
-      <nav className="justify-start" style={{ backgroundColor: '#007BFF', color: 'white' }}>
-        <button
-          onClick={() => getProduits()}
-          className={`duration-500 px-[10px] ${categorieActive === null ? 'bg-black' : ''}`}
-        >
-          Tout voir
-        </button>
-        {categorie.map((cate) => (
+        <nav className="justify-start border-b-blue border-[2px] text-white mx-xl py-2">
           <button
-            key={cate.id_t_categorie}
-            onClick={() => getAppCate(cate.id_t_categorie)}
-            className={`duration-500 hover:bg-black px-[10px] ${categorieActive === cate.id_t_categorie ? 'bg-black' : ''}`}
+            onClick={() => getProduits()}
+            className={`p-2 px-3 duration-500 px-[10px] rounded-sm ${categorieActive === null ? 'bg-blue' : ''}`}
           >
-            {cate.lib_court}
+            Tout voir
           </button>
-        ))}
-      </nav>
+          {categorie.map(cate => (
+            <button
+              key={cate.id_t_categorie}
+              onClick={() => getAppCate(cate.id_t_categorie)}
+              className={`p-2 px-3 duration-500 px-[10px] rounded-sm duration-500 bg-clearBlue hover:bg-black px-[10px] ${categorieActive === cate.id_t_categorie ? 'bg-blue' : ''}`}
+            >
+              {cate.lib_court}
+            </button>
+          ))}
+        </nav>
 
-      {produits.length === 0 ? (
-        <p>Requête produit...</p>
-      ) : (
-        <Card produits={produits} addToPanier={addToPanier} />
-      )}
+        <div className="h-[20px]">
+          {messageSucces && (
+            <div
+              style={{
+                backgroundColor: 'green',
+                color: 'white',
+                padding: '10px',
+                textAlign: 'center',
+              }}
+            >
+              {messageSucces}
+            </div>
+          )}
+        </div>
+
+        {produits.length === 0 ? (
+          <p>Requête produit...</p>
+        ) : (
+          <Card produits={produits} addToPanier={addToPanier} />
+        )}
+      </div>
     </>
   )
 }
