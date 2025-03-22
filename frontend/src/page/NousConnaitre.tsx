@@ -121,7 +121,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     position: 'relative',
     minHeight: '70vh',
     background:
-      'linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0,0,0,0.3)), url("/public/images/Bg-nous-Connaître.webp") center/cover no-repeat',
+      'linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0,0,0,0.3)), url("/images/Bg-nous-Connaître.webp") center/cover no-repeat',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
