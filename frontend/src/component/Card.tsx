@@ -1,99 +1,178 @@
-import { Produit } from '../types' // Importez le type Produit
+import React, { useState } from 'react';
+import { Produit } from '../types';
 
 type CardProps = {
-  produits: Produit[] // Un tableau de Produit
-  addToPanier: (produit: Produit) => void // Une fonction pour ajouter au panier
-}
+  produit: Produit;
+  addToPanier: (produit: Produit) => void;
+};
 
-const Card = ({ produits, addToPanier }: CardProps) => {
+const Card: React.FC<CardProps> = ({ produit, addToPanier }) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const handleFlipCard = () => {
+    setIsFlipped(!isFlipped);
+  };
+
+  const handleAddToPanier = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    addToPanier(produit);
+  };
+
   return (
     <div
       style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: '20px',
-        padding: '20px',
-        justifyContent: 'center',
+        width: '280px',
+        height: '480px',
+        perspective: '1000px',
+        // marginTop: '10px',
+        position: 'relative',
       }}
     >
-      {produits.map(produit => (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          position: 'relative',
+          transformStyle: 'preserve-3d',
+          transition: 'transform 0.6s ease-in-out',
+          transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+        }}
+        onClick={handleFlipCard}
+      >
+        {/* Face avant */}
         <div
-          // key={produit.id}
           style={{
+            width: '100%',
+            height: '100%',
+            position: 'absolute',
+            backfaceVisibility: 'hidden',
+            backgroundColor: 'white',
+            borderRadius: '12px',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            padding: '24px',
             display: 'flex',
             flexDirection: 'column',
-            border: 'solid 1px #ddd',
-            borderRadius: '8px',
-            padding: '20px',
-            width: '300px',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-            backgroundColor: '#fff',
-            transition: 'transform 0.3s ease-in-out',
             justifyContent: 'space-between',
+            // alignItems: 'center',
           }}
         >
-          <div>
-            <div className="flex flex-col justify-center items-center">
-              {produit.image_url && (
-                <img
-                  src={produit.image_url}
-                  alt={produit.nom_produit}
-                  style={{
-                    width: '200px',
-                    height: '200px',
-                    objectFit: 'cover',
-                    borderRadius: '8px',
-                    marginBottom: '15px',
-                  }}
-                />
-              )}
-            </div>
-
-            <h3 style={{ fontSize: '139%', fontWeight: 'bold', marginBottom: '10px' }}>
-              {produit.nom_produit} - {produit.dosage}
-            </h3>
-
-            <div style={{ marginBottom: '10px', color: '#666' }}>
-              <strong>Laboratoire:</strong> <span>{produit.laboratoire_fabriquant}</span>
-            </div>
-
-            <p style={{ fontSize: '14px', color: '#666', marginBottom: '10px' }}>
-              <strong>Restrictions:</strong> {produit.restrictions}
-            </p>
-
-            <p style={{ fontSize: '14px', color: '#666', marginBottom: '10px' }}>
-              {produit.description}
-            </p>
-          </div>
-
-          <div>
-            <div style={{ marginBottom: '10px', color: 'black', fontSize: '200%' }}>
-              <strong>{produit.prix}€</strong>
-            </div>
-
-            <button
-              className="hover:bg-darkBlue"
+          <h3
+            style={{
+              fontSize: '18px',
+              // fontWeight: '600',
+              position: 'absolute',
+              // top: '8px',
+              left: '10%',
+              // transform: 'translateX(-50%)',
+              backgroundColor: 'rgba(255, 255, 255, 1 )',
+              // padding: '4px 8px',
+              borderRadius: '8px',
+              zIndex: 1,
+            }}
+          >
+            {produit.nom_produit} - {produit.dosage}
+          </h3>
+          {produit.image_url && (
+            <img
+              src={produit.image_url}
+              alt={produit.nom_produit}
               style={{
-                padding: '10px 20px',
-                backgroundColor: '#007BFF',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
                 width: '100%',
-                bottom: '0',
+                height: '192px',
+                objectFit: 'cover',
+                borderRadius: '8px',
+                marginTop: '40px',
               }}
-              onMouseEnter={e => (e.target.style.backgroundColor = '#0667cf')}
-              onMouseLeave={e => (e.target.style.backgroundColor = '#007BFF')}
-              onClick={() => addToPanier(produit)} // Ajouter le produit au panier
-            >
-              Acheter
-            </button>
+            />
+          )}
+          <p style={{ fontSize: '14px', marginBottom: '4px' }}>
+            <strong>Laboratoire:</strong> {produit.laboratoire_fabriquant}
+          </p>
+          <div style={{ fontSize: '24px', fontWeight: '700', color: '#3182ce', marginBottom: '16px' }}>
+            {produit.prix}€
           </div>
+          <button
+            style={{
+              width: '100%',
+              background: 'linear-gradient(to right, #3b82f6, #2563eb)',
+              color: 'white',
+              padding: '8px 0',
+              borderRadius: '8px',
+              border: 'none',
+              cursor: 'pointer',
+            }}
+            onClick={handleAddToPanier}
+          >
+            Acheter
+          </button>
+          <button
+            style={{
+              marginTop: '8px',
+              width: '100%',
+              backgroundColor: '#edf2f7',
+              color: '#4a5568',
+              padding: '8px 0',
+              borderRadius: '8px',
+              border: 'none',
+              cursor: 'pointer',
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleFlipCard();
+            }}
+          >
+            Plus d'info
+          </button>
         </div>
-      ))}
-    </div>
-  )
-}
 
-export default Card
+        {/* Face arrière */}
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            position: 'absolute',
+            backfaceVisibility: 'hidden',
+            backgroundColor: 'white',
+            borderRadius: '12px',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            padding: '24px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            transform: 'rotateY(180deg)',
+          }}
+        >
+          <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '8px' }}>
+            Description de {produit.nom_produit}
+          </h3>
+          <p style={{ fontSize: '14px', marginBottom: '16px' }}>{produit.description}</p>
+          <p style={{ fontSize: '14px', marginBottom: '4px' }}>
+            <strong>Conservation:</strong> {produit.conservation}
+          </p>
+          <p style={{ fontSize: '14px', marginBottom: '4px' }}>
+            <strong>Restrictions:</strong> {produit.restrictions}
+          </p>
+          <button
+            style={{
+              width: '100%',
+              backgroundColor: '#edf2f7',
+              color: '#4a5568',
+              padding: '8px 0',
+              borderRadius: '8px',
+              border: 'none',
+              cursor: 'pointer',
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleFlipCard();
+            }}
+          >
+            Retour
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default React.memo(Card);
