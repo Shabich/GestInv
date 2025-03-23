@@ -1,6 +1,7 @@
 import { MenuItem, TextField, Checkbox, FormControlLabel } from '@mui/material'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { apiFetch } from '../utils/api'
 
 function Auth() {
   const [email, setEmail] = useState('')
@@ -21,19 +22,20 @@ function Auth() {
 
   const [pharmacies, setPharmacies] = useState<{ value: string; label: string }[]>([])
 
+
   useEffect(() => {
-    fetch('http://localhost:3000/api/pharmacie')
-      .then(res => res.json())
-      .then(data =>
+    apiFetch<Pharmacy[]>('/pharmacie')
+      .then((data) =>
         setPharmacies(
           data.map((pharmacie: any) => ({
             value: pharmacie.id_t_pharmacie,
             label: `${pharmacie.lib_court} (${pharmacie.departement})`,
-          })),
-        ),
+          }))
+        )
       )
-      .catch(error => console.error('Erreur récupération pharmacies:', error))
-  }, [])
+      .catch((error) => console.error('Erreur récupération pharmacies:', error));
+  }, []);
+
 
   useEffect(() => {
     if (token) {
@@ -67,38 +69,23 @@ function Auth() {
             adresse,
             num_tel: numTel,
             date_naissance: dateNaissance,
-            ...(id_t_pharmacie && { id_t_pharmacie }), // Conditionally include id_t_pharmacie if not empty
+            id_t_pharmacie: id_t_pharmacie || null, 
           }
         : { email, password }
-
-      const response = await fetch(`http://localhost:3000/api/auth/${endpoint}`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
-        body: JSON.stringify(dataForm),
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        console.error('Erreur backend :', data)
-        throw new Error(data.message || 'Une erreur est survenue')
-      }
+          console.log(dataForm, 'dataform')
+        const data = await apiFetch<AuthResponse>(`/auth/${endpoint}`, {
+          method: 'POST',
+          body: JSON.stringify(dataForm),
+        });
 
       if (isSignUp) {
         // Connexion après inscription
-        const loginResponse = await fetch(`http://localhost:3000/api/auth/signin`, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+        const loginData = await apiFetch<AuthResponse>('/auth/signin', {
           method: 'POST',
           body: JSON.stringify({ email, password }),
-        })
+        });
 
-        const loginData = await loginResponse.json()
-
-        if (!loginResponse.ok || !loginData.token) {
+        if (!loginData.token) {
           console.error('Erreur backend :', loginData)
           throw new Error("Erreur lors de la connexion après l'inscription")
         }

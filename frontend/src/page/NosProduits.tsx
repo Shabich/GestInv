@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Card from '../component/Card';
 import { Categorie, Produit } from '../types';
+import { apiFetch } from '../utils/api';
 
 function NosProduits() {
   const [produits, setProduits] = useState<Produit[]>([]);
@@ -16,22 +17,8 @@ function NosProduits() {
 
   const getProduits = async () => {
     try {
-      const token = localStorage.getItem('authToken');
-      const url = 'http://localhost:3000/api/produits';
+      const data = await apiFetch<Produit[]>('/produits');
 
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Problème avec la requête');
-      }
-
-      const data: Produit[] = await response.json();
       setProduits(data);
       setCategorieActive(null);
     } catch (error) {
@@ -41,20 +28,8 @@ function NosProduits() {
 
   const getCategories = async () => {
     try {
-      const url = 'http://localhost:3000/api/produits/categorie';
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Problème avec la requête');
-      }
-
-      const data = await response.json();
-      setCategorie(data);
+      const cate = await apiFetch<Categorie[]>('/produits/categorie');
+      setCategorie(cate);
     } catch (error) {
       console.error('Erreur de requête:', error);
     }
@@ -72,46 +47,25 @@ function NosProduits() {
 
   const getAppCate = async (id: number) => {
     try {
-      const url = `http://localhost:3000/api/produits/categorie/${id}`;
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Problème avec la requête');
-      }
-
-      const data = await response.json();
+      const data = await apiFetch<Produit[]>(`/produits/categorie/${id}`);
       setProduits(data);
       setCategorieActive(id);
     } catch (error) {
-      console.error('Erreur de requête:', error);
+      console.error('Erreur lors de la récupération des produits par catégorie:', error);
     }
   };
 
   const handleSearch = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSearchTerm(value);
+
     if (value.length > 1) {
       try {
-        const url = `http://localhost:3000/api/produits/search/${value}`;
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        if (!response.ok) {
-          throw new Error('Problème avec la requête');
-        }
-        const data = await response.json();
+        const data = await apiFetch<Produit[]>(`/produits/search/${value}`);
         setProduits(data);
         setCategorieActive(0);
       } catch (error) {
-        console.error('Erreur de requête:', error);
+        console.error('Erreur lors de la recherche des produits:', error);
       }
     } else {
       getProduits();

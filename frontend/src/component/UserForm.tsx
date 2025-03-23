@@ -5,6 +5,7 @@ import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
+import { apiFetch } from '../utils/api'
 
 interface User {
   nom?: string
@@ -43,19 +44,7 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadUs
         setLoading(true)
         setError(null)
         try {
-          const response = await fetch(`http://localhost:3000/api/users/${id}`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-          })
-          if (!response.ok) {
-            const errorData = await response.json()
-            throw new Error(errorData.message || 'Erreur lors de la requête')
-          }
-
-          const data = await response.json()
+          const data = await apiFetch<User>(`/users/${id}`)
           const userForm = { ...data }
           if (userForm.date_naissance)
             userForm.date_naissance = userForm.date_naissance.slice(0, 10)
@@ -96,7 +85,7 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadUs
     setError(null)
     try {
       console.log(user, 'bodyput')
-      const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+      const response :Response = await apiFetch(`/users/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

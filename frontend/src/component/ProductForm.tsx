@@ -7,6 +7,7 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
 import MenuItem from '@mui/material/MenuItem'
 import { Categorie } from '../types'
+import { apiFetch } from '../utils/api'
 
 interface Produit {
   nom_produit: string
@@ -59,21 +60,7 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadPr
         setLoading(true)
         setError(null)
         try {
-          const response = await fetch(`http://localhost:3000/api/produits/${id}`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-          })
-
-          if (!response.ok) {
-            const errorData = await response.json()
-            throw new Error(errorData.message || 'Erreur lors de la requête')
-          }
-
-          const data = await response.json()
-          console.log(data, 'data')
+          const data = await apiFetch<Produit[]>(`produits/${id}`)
           setProduit(data[0])
         } catch (error: unknown) {
           console.error('Erreur de requête :', error)
@@ -130,10 +117,10 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadPr
     try {
       const method = id ? 'PUT' : 'POST'
       const url = id
-        ? `http://localhost:3000/api/produits/${id}`
-        : `http://localhost:3000/api/produits`
+        ? `/produits/${id}`
+        : `/produits`
 
-      const response = await fetch(url, {
+      const response: Response = await apiFetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json',
@@ -142,10 +129,9 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadPr
         body: JSON.stringify(produit),
       })
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        console.error('Erreur backend lors de la sauvegarde du produit :', errorData)
-        throw new Error(errorData.message || 'Erreur lors de la requête')
+      if (!response) {
+        console.error('Erreur backend lors de la sauvegarde du produit :')
+        throw new Error('Erreur lors de la requête')
       }
       setMessageSucces(id ? 'Produit modifié avec succès' : 'Produit créé avec succès')
       setTimeout(() => setMessageSucces(null), 3000)
@@ -160,19 +146,7 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadPr
 
   const getCategories = async () => {
     try {
-      const url = 'http://localhost:3000/api/produits/categorie'
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-
-      if (!response.ok) {
-        throw new Error('Problème avec la requête')
-      }
-
-      const data = await response.json()
+      const data = await apiFetch<Categorie[]>('/produits/categorie')
       setCategorie(data)
     } catch (error) {
       console.error('Erreur de requête:', error)

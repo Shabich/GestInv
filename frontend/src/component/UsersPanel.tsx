@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import UserRow from '../component/UserRow'
 import UserForm from './UserForm'
 import { useNavigate } from 'react-router-dom'
+import { apiFetch } from '../utils/api'
 
 export interface User {
   id_t_user: number
@@ -34,21 +35,7 @@ const UsersPanel: React.FC = () => {
 
     setIsLoading(true) // Démarrage du chargement
     try {
-      const response = await fetch('http://localhost:3000/api/users', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.error('Réponse complète du serveur :', errorText)
-        throw new Error('Problème avec la requête')
-      }
-
-      const data = await response.json()
-      console.log('Users récupérés :', data)
+      const data = await apiFetch<User[]>('/users')
       setUsers(data)
     } catch (err) {
       console.error('Erreur de requête :', err)
@@ -86,7 +73,7 @@ const UsersPanel: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+      const response: Response = await apiFetch(`/users/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -94,15 +81,15 @@ const UsersPanel: React.FC = () => {
         },
       })
 
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.error('Réponse complète du serveur :', errorText)
+      if (!response) {
+        console.error('Réponse complète du serveur :')
         throw new Error('Erreur lors de la suppression')
       }
 
       setUsers(prev => prev.filter(user => user.id_t_user !== id))
       setMessageSucces('User supprimé avec succès')
-      setTimeout(() => setMessageSucces(null), 3000)    } catch (err) {
+      setTimeout(() => setMessageSucces(null), 3000)
+    } catch (err) {
       console.error('Erreur lors de la suppression :', err)
       alert('Erreur lors de la suppression du user')
     }

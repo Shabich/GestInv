@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import ProductRow from '../component/ProductRow'
 import FormDialog from '../component/ProductForm'
 import { useNavigate } from 'react-router-dom'
+import { apiFetch } from '../utils/api'
 
 export interface Product {
   id_t_produit: number
@@ -36,21 +37,7 @@ const ProductsPanel: React.FC = () => {
 
     setIsLoading(true) // Démarrage du chargement
     try {
-      const response = await fetch('http://localhost:3000/api/produits', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      })
-
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.error('Réponse complète du serveur :', errorText)
-        throw new Error('Problème avec la requête')
-      }
-
-      const data = await response.json()
+      const data = await apiFetch<Product[]>('/produits')
       console.log('Produits récupérés :', data) // Ajout de log pour inspection
       setProduits(data)
     } catch (err) {
@@ -87,7 +74,7 @@ const ProductsPanel: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/produits/${id}`, {
+      const response: Response= await apiFetch(`/produits/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -95,9 +82,8 @@ const ProductsPanel: React.FC = () => {
         },
       })
 
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.error('Réponse complète du serveur :', errorText)
+      if (!response) {
+        console.error('Réponse complète du serveur :')
         throw new Error('Erreur lors de la suppression')
       }
 
