@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import UserRow from '../component/UserRow'
-import UserForm from './UserForm'
 import { useNavigate } from 'react-router-dom'
 import { apiFetch } from '../utils/api'
-
-export interface User {
-  id_t_user: number
-  name_t_user: string
-  adminAproved: boolean
-}
 
 const UsersPanel: React.FC = () => {
   const [users, setUsers] = useState<User[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
-  const [open, setOpen] = useState(false)
-  const [idEdit, setId] = useState<number | null>(null)
   const [messageSucces, setMessageSucces] = useState<string | null>(null) // État pour le message de succès
 
   // Récupérer le token
@@ -40,7 +31,6 @@ const UsersPanel: React.FC = () => {
     } catch (err) {
       console.error('Erreur de requête :', err)
       setError('Erreur lors du chargement des users')
-
     } finally {
       setIsLoading(false)
     }
@@ -49,17 +39,6 @@ const UsersPanel: React.FC = () => {
   useEffect(() => {
     getUsers()
   }, [token])
-
-  const handleClickOpen = (id: number | null) => {
-    setId(id)
-    setOpen(true)
-  }
-
-  const handleClose = () => {
-    setOpen(false)
-    getUsers() 
-  }
-
 
   const handleDelete = async (id: number) => {
     const confirmDelete = window.confirm(
@@ -96,18 +75,17 @@ const UsersPanel: React.FC = () => {
   }
 
   return (
-
     <div>
-          {messageSucces && (
-        <div style={{ backgroundColor: 'green', color: 'white', padding: '10px', textAlign: 'center' }}>
+      {messageSucces && (
+        <div
+          style={{ backgroundColor: 'green', color: 'white', padding: '10px', textAlign: 'center' }}
+        >
           {messageSucces}
         </div>
       )}
       {isLoading && <p>Chargement des users...</p>}
-      {error && <p style={{ color: 'red' }}>{error} 
-      </p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       {error && <button onClick={handleLogout}>Veuillez vous reconnecter</button>}
-
 
       {!isLoading && !error && (
         <table border={1} style={{ width: '100%', textAlign: 'left' }}>
@@ -115,29 +93,23 @@ const UsersPanel: React.FC = () => {
             <tr>
               <th>ID</th>
               <th>Nom</th>
-              <th>Statut</th>
-              <th>Actions</th>
+              <th>Prenom</th>
+              <th>Adresse mail</th>
+              <th>Admin</th>
             </tr>
           </thead>
           <tbody>
-            {users.map(user => (
+            {users.map((user, index) => (
               <UserRow
                 key={user.id_t_user}
                 user={user}
-                onEdit={() => handleClickOpen(user.id_t_user)}
+                index={index}
                 onDelete={() => handleDelete(user.id_t_user)}
               />
             ))}
           </tbody>
         </table>
       )}
-      <UserForm
-        id={idEdit}
-        open={open}
-        handleClose={handleClose}
-        reloadUsers={getUsers} // Ajout de la propriété `reloadProduits`
-
-        />
     </div>
   )
 }
