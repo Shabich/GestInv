@@ -74,6 +74,17 @@ static async update(user: Users, id: number): Promise<void> {
   );
 }
 
+static async updateRole(admin: boolean, id: number): Promise<void> {
+  if (!id) {
+    throw new Error("L'ID de l'utilisateur est requis pour la mise à jour.");
+  }
+  if (!admin) {
+    throw new Error("L'utilisateur n'a pas communiqué son role'");
+  }
+  await db.query(
+    `UPDATE t_user SET admin = ?  WHERE id_t_user = ?`,  [ admin, id]
+  );
+}
 
   static async delete(id: number): Promise<void> {
     await db.query('DELETE FROM t_user WHERE id_t_user = ?', [id])
