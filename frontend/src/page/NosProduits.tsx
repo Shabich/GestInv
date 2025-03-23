@@ -110,18 +110,24 @@ function NosProduits() {
 
         {/* Message de succès */}
         <div className="h-[20px]">
-          {messageSucces && (
-            <div
-              style={{
-                backgroundColor: 'green',
-                color: 'white',
-                padding: '10px',
-                textAlign: 'center',
-              }}
-            >
-              {messageSucces}
-            </div>
-          )}
+ {messageSucces && (
+  <div
+    style={{
+      position: 'absolute',
+      top: '10px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      zIndex: 50,
+      backgroundColor: 'green',
+      color: 'white',
+      padding: '10px 20px',
+      borderRadius: '5px',
+      boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+    }}
+  >
+    {messageSucces}
+  </div>
+)}
         </div>
 
         {/* Affichage des produits */}
