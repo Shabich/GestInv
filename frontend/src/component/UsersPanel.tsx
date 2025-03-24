@@ -111,12 +111,21 @@ const UsersPanel: React.FC = () => {
           </thead>
           <tbody>
             {users.map((user, index) => (
-              <UserRow
-                key={user.id_t_user}
-                user={user}
-                index={index}
-                onDelete={() => handleDelete(user.id_t_user)}
-              />
+   <UserRow
+   key={user.id_t_user}
+   user={{
+     ...user,
+     adresse_mail: user.adresse_mail ?? "",
+     nom: user.nom ?? "",
+     prenom: user.prenom ?? "",
+     admin: Boolean(user.admin), // Convertit 1 ou 0 en true ou false
+   }}
+   index={index}
+   onDelete={() => handleDelete(user.id_t_user)}
+ />
+ 
+            
+            
             ))}
           </tbody>
         </table>
