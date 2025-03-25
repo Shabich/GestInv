@@ -60,7 +60,7 @@ const FormDialog: React.FC<FormDialogProps> = ({ open, id, handleClose, reloadPr
         setLoading(true)
         setError(null)
         try {
-          const data = await apiFetch<Produit[]>(`produits/${id}`)
+          const data = await apiFetch<Produit[]>(`/produits/${id}`)
           setProduit(data[0])
         } catch (error: unknown) {
           console.error('Erreur de requête :', error)
