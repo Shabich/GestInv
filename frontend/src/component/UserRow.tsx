@@ -31,7 +31,7 @@ const UserRow: React.FC<UserRowProps> = ({
   }
 
   return (
-    <tr style={{ backgroundColor: isEven ? '#f0f0f0' : 'transparent' }}>
+    <tr style={{ backgroundColor: isEven ? '#cce3ff' : 'transparent' }}>
       <td>{user.id_t_user}</td>
       <td>{user.nom}</td>
       <td>{user.prenom}</td>

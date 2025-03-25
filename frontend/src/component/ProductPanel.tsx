@@ -130,12 +130,14 @@ const ProductsPanel: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {produits.map(produit => (
+            {produits.map((produit, index) => (
               <ProductRow
                 key={produit.id_t_produit}
                 produit={produit}
                 onEdit={() => handleClickOpen(produit.id_t_produit)}
                 onDelete={() => handleDelete(produit.id_t_produit)}
+                index={index}
+
               />
             ))}
           </tbody>
