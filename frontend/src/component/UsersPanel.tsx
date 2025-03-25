@@ -13,6 +13,27 @@ const UsersPanel: React.FC = () => {
   const token = localStorage.getItem('authToken')
   const navigate = useNavigate()
 
+  const updateUserRole = async (userId: number, newRole: boolean) => {
+    if (!token) {
+      console.error('Aucun token trouvé')
+      return
+    }
+
+    try {
+      await apiFetch(`/users/role/${userId}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ admin: newRole }),
+      })
+      console.log(`Utilisateur ${userId} mis à jour avec succès`)
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du rôle de l’utilisateur:', error)
+    }
+  }
+
   const handleLogout = () => {
     localStorage.removeItem('authToken')
     navigate('/login')
@@ -78,18 +99,18 @@ const UsersPanel: React.FC = () => {
     <div>
       {messageSucces && (
         <div
-        style={{
-          position: 'absolute',
-          top: '10px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 50,
-          backgroundColor: 'green',
-          color: 'white',
-          padding: '10px 20px',
-          borderRadius: '5px',
-          boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        }}
+          style={{
+            position: 'absolute',
+            top: '10px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 50,
+            backgroundColor: 'green',
+            color: 'white',
+            padding: '10px 20px',
+            borderRadius: '5px',
+            boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+          }}
         >
           {messageSucces}
         </div>
@@ -111,21 +132,19 @@ const UsersPanel: React.FC = () => {
           </thead>
           <tbody>
             {users.map((user, index) => (
-   <UserRow
-   key={user.id_t_user}
-   user={{
-     ...user,
-     adresse_mail: user.adresse_mail ?? "",
-     nom: user.nom ?? "",
-     prenom: user.prenom ?? "",
-     admin: Boolean(user.admin), // Convertit 1 ou 0 en true ou false
-   }}
-   index={index}
-   onDelete={() => handleDelete(user.id_t_user)}
- />
- 
-            
-            
+              <UserRow
+                key={user.id_t_user}
+                user={{
+                  ...user,
+                  adresse_mail: user.adresse_mail ?? '',
+                  nom: user.nom ?? '',
+                  prenom: user.prenom ?? '',
+                  admin: Boolean(user.admin), // Convertit 1 ou 0 en true ou false
+                }}
+                index={index}
+                onRoleChange={updateUserRole}
+                onDelete={() => handleDelete(user.id_t_user)}
+              />
             ))}
           </tbody>
         </table>
