@@ -74,17 +74,20 @@ static async update(user: Users, id: number): Promise<void> {
   );
 }
 
-static async updateRole(admin: boolean, id: number): Promise<void> {
+static async updateRole(id: number): Promise<void> {
   if (!id) {
     throw new Error("L'ID de l'utilisateur est requis pour la mise à jour.");
   }
-  if (!admin) {
-    throw new Error("L'utilisateur n'a pas communiqué son role'");
+  const [rows]: any = await db.query(`SELECT admin FROM t_user WHERE id_t_user = ?`, [id]);
+  if (!Array.isArray(rows) || rows.length === 0) {
+    throw new Error("Utilisateur non trouvé.");
   }
   await db.query(
-    `UPDATE t_user SET admin = ?  WHERE id_t_user = ?`,  [ admin, id]
+    `UPDATE t_user SET admin = ? WHERE id_t_user = ?`, 
+    [rows[0].admin ? 0 : 1, id]
   );
 }
+
 
   static async delete(id: number): Promise<void> {
     await db.query('DELETE FROM t_user WHERE id_t_user = ?', [id])

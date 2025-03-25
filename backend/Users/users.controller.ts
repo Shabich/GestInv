@@ -71,12 +71,11 @@ export class UsersController {
   static async updateRole(req: Request, res: Response){
     try {
       const id = parseInt(req.params.id, 10);
-      const admin = req.body.admin;
   
       if (!id) {
         return res.status(400).json({ message: "ID et mot de passe actuel requis" });
       }
-      await UsersService.updateRole(!admin, id);
+      await UsersService.updateRole(id);
   
       res.json({ message: "Role de l'utilisateur mis à jour" });
     } catch (e: any) {
