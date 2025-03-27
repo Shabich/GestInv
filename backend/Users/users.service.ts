@@ -18,10 +18,7 @@ export class UsersService {
   
     const user = rows[0] as Users;
   
-    // Vérifie que date_naissance est défini avant d'utiliser slice
-    if (user.date_naissance) {
-      user.date_naissance = user.date_naissance.toString().slice(0, 15);
-    }
+  
   
     return user;
   }
