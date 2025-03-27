@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Card, CardContent, Box, Typography, TextField, Button, Divider } from '@mui/material';
+import { Card, CardContent, Box, Typography, TextField, Button, Divider, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { AccountCircle } from '@mui/icons-material';
 import { jwtDecode } from 'jwt-decode';
 
@@ -21,10 +21,12 @@ const ProfilePage = () => {
     adresse_mail: '',
     adresse: '',
     num_tel: '',
-    date_naissance: new Date(), // Initialisation à une date par défaut
+    date_naissance: new Date(),
   });
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
   const [oldEmail, setOldEmail] = useState('');
+  const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -48,13 +50,10 @@ const ProfilePage = () => {
         const data = await response.json();
         setOldEmail(data.adresse_mail);
 
-        // Conversion de la date au format Date si elle existe
-        const formattedData = {
+        setProfile({
           ...data,
           date_naissance: data.date_naissance ? new Date(data.date_naissance) : new Date(),
-        };
-
-        setProfile(formattedData);
+        });
       } catch (error) {
         console.error('Erreur lors du chargement des données utilisateur', error);
         alert('Impossible de charger les données utilisateur.');
@@ -68,7 +67,6 @@ const ProfilePage = () => {
     const { name, value } = e.target;
 
     if (name === 'date_naissance') {
-      // Convertir la chaîne de date en objet Date
       setProfile({ ...profile, date_naissance: new Date(value) });
     } else {
       setProfile({ ...profile, [name]: value });
@@ -81,16 +79,24 @@ const ProfilePage = () => {
       return;
     }
 
+    setOpenDialog(true);
+  };
+
+  const confirmUpdate = async () => {
     try {
       const token = localStorage.getItem('authToken');
       if (!token) throw new Error("Token non trouvé");
 
+      const decoded: any = jwtDecode(token);
+      const userId = decoded.id;
+
       const updatedProfile = {
         ...profile,
-        date_naissance: profile.date_naissance.toISOString(), // Convertir Date en ISO string
+        ancienne_adresse_mail: oldEmail,
+        current_password: currentPassword,
       };
 
-      const response = await fetch(`http://localhost:3000/api/users/update`, {
+      const response = await fetch(`http://localhost:3000/api/users/${userId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -103,6 +109,7 @@ const ProfilePage = () => {
 
       alert('Profil mis à jour avec succès !');
       setIsEditing(false);
+      setOpenDialog(false);
     } catch (error) {
       console.error('Erreur lors de la mise à jour du profil', error);
       alert("Une erreur s'est produite, veuillez réessayer.");
@@ -159,7 +166,7 @@ const ProfilePage = () => {
                 label="Date de naissance"
                 name="date_naissance"
                 type="date"
-                value={profile.date_naissance.toISOString().split('T')[0]} // Format YYYY-MM-DD
+                value={profile.date_naissance.toISOString().split('T')[0]}
                 onChange={handleChange}
                 fullWidth
                 variant="outlined"
@@ -176,7 +183,6 @@ const ProfilePage = () => {
               />
               <TextField
                 label="Confirmer le mot de passe"
-                name="confirm_password"
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -194,6 +200,24 @@ const ProfilePage = () => {
           Modifier mon profil
         </Button>
       )}
+
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>Confirmer votre identité</DialogTitle>
+        <DialogContent>
+          <TextField
+            label="Mot de passe actuel"
+            type="password"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            fullWidth
+            variant="outlined"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>Annuler</Button>
+          <Button onClick={confirmUpdate} color="primary">Confirmer</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
