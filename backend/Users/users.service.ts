@@ -9,9 +9,23 @@ export class UsersService {
   }
 
   static async getById(id: number): Promise<Users | null> {
-    const [rows]: any = await db.query('SELECT * FROM t_user WHERE id_t_user = ?', [id])
-    return (rows[0] as Users) || null
+    const [rows]: any = await db.query(
+      'SELECT prenom, nom, adresse_mail, adresse, num_tel, date_naissance FROM t_user WHERE id_t_user = ?',
+      [id]
+    );
+  
+    if (!rows.length) return null; // Vérifie si la requête a retourné des résultats
+  
+    const user = rows[0] as Users;
+  
+    // Vérifie que date_naissance est défini avant d'utiliser slice
+    if (user.date_naissance) {
+      user.date_naissance = user.date_naissance.toString().slice(0, 15);
+    }
+  
+    return user;
   }
+  
 
     static async getUser(email: string): Promise<Users | null> {
       try {
@@ -47,11 +61,7 @@ export class UsersService {
         throw new Error("Erreur serveur");
       }
     }
-    
- static async getUserById(id: number){
-  const rows = await db.query('SELECT * FROM t_user WHERE id_t_user = ?', [id]);
-  return (rows[0] as Users) || null
-}
+
 
 static async update(user: Users, id: number): Promise<void> {
   const { nom, prenom, adresse_mail, adresse, num_tel, date_naissance, id_t_rappel, admin, password } = user;

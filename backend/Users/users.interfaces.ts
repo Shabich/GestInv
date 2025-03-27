@@ -5,9 +5,8 @@ export interface Users {
   adresse_mail?: string
   adresse?: string
   num_tel?: string
-  date_naissance?: Date
+  date_naissance?: Date | string
   id_t_rappel?: number
   password? : string
-  
   admin?: boolean
 }
