@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react'
+import { SetStateAction, useEffect, useState } from 'react'
 import { Produit } from '../types'
 import { jwtDecode } from 'jwt-decode'
-import DeletePopup from '../component/deletePopup'
+import DeletePopup from '../component/DeletePopup'
 
 function Panier() {
   const [panier, setPanier] = useState<Produit[]>([])
   const [isPopupOpen, setIsPopupOpen] = useState(false)
   const [productIdToDelete, setProductIdToDelete] = useState(null)
 
-  const handleDeleteClick = productId => {
+  const handleDeleteClick = (productId: number | SetStateAction<null>) => {
     setProductIdToDelete(productId)
     setIsPopupOpen(true)
   }

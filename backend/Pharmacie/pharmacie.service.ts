@@ -47,16 +47,3 @@ export class pharmacieService {
 
 
 }
-
-
-// à partir de l'interface suivante, faire les routes CREATE, PUT et DELETE. export interface Pharmacie {
-  //   id_t_pharmacie?: number;
-  //   ville: string;
-  //   adresse: string;
-  //   region: string;
-  //   departement: string;
-  //   numero_telephone: number;
-  //   lib_court: string;
-  //   lib_long: string;
-  // }
-  

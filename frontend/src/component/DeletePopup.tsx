@@ -1,7 +1,14 @@
-import React from 'react'
+import React from 'react';
 
-const DeletePopup = ({ isOpen, onClose, onConfirm, message }) => {
-  if (!isOpen) return null
+interface DeletePopupProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  message: string;
+}
+
+const DeletePopup: React.FC<DeletePopupProps> = ({ isOpen, onClose, onConfirm, message }) => {
+  if (!isOpen) return null;
 
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -14,7 +21,6 @@ const DeletePopup = ({ isOpen, onClose, onConfirm, message }) => {
           >
             Annuler
           </button>
-
           <button
             onClick={onConfirm}
             className="px-4 py-2 bg-red text-white rounded hover:bg-red transition"
@@ -24,7 +30,7 @@ const DeletePopup = ({ isOpen, onClose, onConfirm, message }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DeletePopup
+export default DeletePopup;
